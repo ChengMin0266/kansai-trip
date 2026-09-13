@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#bb3a2a">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="关西行程">
+</head>
+<body>
+<title>关西七日行程 · 神户—姬路—京都洛北</title>
+<style>
+  :root{
+    --paper:#faf9f6;
+    --panel:#f1efe9;
+    --ink:#242c38;
+    --ink-2:#5a6373;
+    --line:#ddd9cf;
+    --kobe:#33627f;
+    --kobe-bg:#e5edf2;
+    --kyoto:#55704f;
+    --kyoto-bg:#e7ecdf;
+    --shu:#bb3a2a;
+    --shu-bg:#f6e7e2;
+    --warn-bg:#f5eedd;
+    --warn-ink:#7a5c1e;
+    --chip-mute:#8a8577;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#171a20;
+      --panel:#1f242d;
+      --ink:#e3e2da;
+      --ink-2:#9aa1ad;
+      --line:#343a45;
+      --kobe:#7fb0cd;
+      --kobe-bg:#22313c;
+      --kyoto:#a4bf92;
+      --kyoto-bg:#28322a;
+      --shu:#e0705c;
+      --shu-bg:#3a2723;
+      --warn-bg:#332c1c;
+      --warn-ink:#d8b665;
+      --chip-mute:#7c7f74;
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#faf9f6; --panel:#f1efe9; --ink:#242c38; --ink-2:#5a6373; --line:#ddd9cf;
+    --kobe:#33627f; --kobe-bg:#e5edf2; --kyoto:#55704f; --kyoto-bg:#e7ecdf;
+    --shu:#bb3a2a; --shu-bg:#f6e7e2; --warn-bg:#f5eedd; --warn-ink:#7a5c1e; --chip-mute:#8a8577;
+  }
+  :root[data-theme="dark"]{
+    --paper:#171a20; --panel:#1f242d; --ink:#e3e2da; --ink-2:#9aa1ad; --line:#343a45;
+    --kobe:#7fb0cd; --kobe-bg:#22313c; --kyoto:#a4bf92; --kyoto-bg:#28322a;
+    --shu:#e0705c; --shu-bg:#3a2723; --warn-bg:#332c1c; --warn-ink:#d8b665; --chip-mute:#7c7f74;
+  }
+
+  *{box-sizing:border-box}
+  html{background:var(--paper)}
+  body{
+    margin:0; padding:48px 20px 80px; background:var(--paper); color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    font-size:15px; line-height:1.75;
+  }
+  .wrap{max-width:780px; margin:0 auto}
+
+  .serif, h1, h2, .day-name{
+    font-family:"Songti SC","Noto Serif SC","Source Han Serif SC","SimSun",serif;
+  }
+  h1{font-size:30px; line-height:1.3; margin:0 0 6px; letter-spacing:.02em; text-wrap:balance}
+  .route{color:var(--ink-2); font-size:14px; letter-spacing:.14em; margin-bottom:14px}
+  .route b{color:var(--kobe); font-weight:600}
+  .route b.ky{color:var(--kyoto)}
+
+  .badges{display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 0}
+  .badge{
+    font-size:12.5px; padding:3px 12px; border-radius:3px; letter-spacing:.06em;
+    border:1px solid var(--line); color:var(--ink-2); background:var(--panel);
+  }
+  .badge.warn{background:var(--warn-bg); color:var(--warn-ink); border-color:transparent}
+  .badge.ok{background:var(--kyoto-bg); color:var(--kyoto); border-color:transparent}
+
+  h2{
+    font-size:19px; margin:52px 0 16px; padding-bottom:8px;
+    border-bottom:1px solid var(--line); letter-spacing:.08em;
+  }
+  h2 .en{font-size:11px; color:var(--chip-mute); letter-spacing:.22em; margin-left:10px; font-family:inherit}
+
+  table{border-collapse:collapse; width:100%; font-size:13.5px; font-variant-numeric:tabular-nums}
+  .tblwrap{overflow-x:auto}
+  th{
+    text-align:left; font-weight:600; color:var(--ink-2); font-size:12px; letter-spacing:.1em;
+    padding:6px 12px 6px 0; border-bottom:1px solid var(--line); white-space:nowrap;
+  }
+  td{padding:8px 12px 8px 0; border-bottom:1px solid var(--line); vertical-align:top}
+  tr:last-child td{border-bottom:none}
+
+  /* day cards */
+  .day{
+    display:grid; grid-template-columns:86px 1fr; gap:0 20px;
+    border:1px solid var(--line); border-radius:6px; background:var(--panel);
+    padding:18px 22px 16px 18px; margin-bottom:14px; position:relative; overflow:hidden;
+  }
+  .day::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--kobe)}
+  .day.ky::before{background:var(--kyoto)}
+  .day.star::before{background:var(--shu)}
+  .day.tbd::before{background:repeating-linear-gradient(180deg,var(--kyoto) 0 6px,transparent 6px 12px)}
+  .day-date{padding-top:2px}
+  .day-num{font-size:12px; letter-spacing:.18em; color:var(--chip-mute)}
+  .day-md{font-size:21px; font-weight:600; line-height:1.2; font-variant-numeric:tabular-nums}
+  .day-wk{font-size:12px; color:var(--ink-2)}
+  .stay{
+    display:inline-block; margin-top:8px; font-size:11.5px; padding:1px 8px; border-radius:3px;
+    background:var(--kobe-bg); color:var(--kobe); letter-spacing:.05em;
+  }
+  .stay.ky{background:var(--kyoto-bg); color:var(--kyoto)}
+  .stay.none{background:transparent; color:var(--chip-mute); border:1px dashed var(--line)}
+  .day-name{font-size:16.5px; font-weight:700; margin:0 0 4px; letter-spacing:.03em}
+  .day-name .flag{color:var(--shu)}
+  .day ul{margin:4px 0 0; padding-left:18px; color:var(--ink)}
+  .day li{margin:3px 0}
+  .day li::marker{color:var(--chip-mute)}
+  .muted{color:var(--ink-2)}
+  .small{font-size:13px}
+
+  .tag{
+    display:inline-block; font-size:11.5px; padding:0 7px; border-radius:3px; margin-right:6px;
+    background:var(--shu-bg); color:var(--shu); letter-spacing:.05em;
+  }
+  .tag.plain{background:var(--warn-bg); color:var(--warn-ink)}
+
+  /* D6 timetable */
+  .tt{margin-top:10px; border-top:1px solid var(--line)}
+  .tt td{padding:7px 10px 7px 0; font-size:13.5px}
+  .tt .t{white-space:nowrap; font-weight:600; color:var(--shu); width:52px; vertical-align:top}
+  .nav{display:inline-block; margin-top:3px; font-size:12.5px; color:var(--kobe); letter-spacing:.02em}
+  .day.ky .nav, .day.star .nav{color:var(--kyoto)}
+
+  .note{
+    background:var(--warn-bg); color:var(--warn-ink); border-radius:5px;
+    padding:12px 16px; font-size:13.5px; margin:12px 0; line-height:1.7;
+  }
+  .note b{font-weight:700}
+
+  /* checklist */
+  .todo{list-style:none; margin:0; padding:0}
+  .todo li{
+    display:flex; gap:12px; padding:10px 4px; border-bottom:1px solid var(--line);
+    align-items:baseline;
+  }
+  .todo li:last-child{border-bottom:none}
+  .box{
+    flex:0 0 auto; width:15px; height:15px; border:1.5px solid var(--chip-mute); border-radius:3px;
+    position:relative; top:2px;
+  }
+  .todo .p1 .box{border-color:var(--shu)}
+  .todo .p1{font-weight:600}
+  .todo .sub{display:block; font-weight:400; font-size:12.5px; color:var(--ink-2)}
+
+  details{
+    border:1px solid var(--line); border-radius:6px; padding:12px 18px; margin:12px 0;
+    background:var(--panel); font-size:13.5px;
+  }
+  summary{cursor:pointer; font-weight:600; letter-spacing:.05em; color:var(--ink-2)}
+  summary:focus-visible{outline:2px solid var(--kobe); outline-offset:3px}
+  details ul{padding-left:18px; margin:10px 0 4px}
+  details li{margin:5px 0}
+
+  .foot{margin-top:56px; color:var(--chip-mute); font-size:12px; letter-spacing:.08em; text-align:center}
+
+  @media (max-width:560px){
+    body{padding:32px 14px 64px}
+    .day{grid-template-columns:1fr; gap:8px; padding:16px}
+    .day-date{display:flex; align-items:baseline; gap:10px}
+    .day-md{font-size:18px}
+    .stay{margin-top:0}
+    h1{font-size:24px}
+  }
+
+  /* 景点介绍弹窗 */
+  .spot{cursor:pointer; border-bottom:1px dashed currentColor}
+  .spot:hover,.spot:focus-visible{color:var(--shu); outline:none}
+  #spotDlg{width:min(560px,92vw); max-width:92vw; border:1px solid var(--line); border-radius:12px; padding:0; background:var(--paper); color:var(--ink); box-shadow:0 12px 40px rgba(0,0,0,.28)}
+  #spotDlg::backdrop{background:rgba(15,15,15,.45)}
+  #spotDlg .dlg-body{padding:22px 22px 18px; max-height:80vh; overflow:auto}
+  #spotDlg .dlg-jp{margin:0; font-size:12px; color:var(--ink-2); letter-spacing:.05em}
+  #spotDlg h3{margin:2px 34px 10px 0; font-size:20px; line-height:1.35}
+  #spotDlg .dlg-tag{display:inline-block; font-size:11px; font-weight:500; padding:1px 8px; border-radius:99px; background:var(--kyoto-bg); color:var(--kyoto); margin-left:8px; vertical-align:middle}
+  #spotDlg .dlg-intro{line-height:1.8; margin:0 0 10px}
+  #spotDlg ul{margin:0 0 12px; padding-left:1.2em; line-height:1.75}
+  #spotDlg .dlg-tip{margin:0; font-size:13px; color:var(--warn-ink); background:var(--warn-bg); padding:8px 10px; border-radius:6px}
+  #spotDlg .dlg-x{position:absolute; top:10px; right:12px; border:0; background:none; font-size:26px; line-height:1; color:var(--ink-2); cursor:pointer}
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div class="route serif">二〇二六 · 九月廿六 — 十月二日 · 七天六晚</div>
+    <h1>关西七日行程</h1>
+    <div class="route"><b>神户</b> 2晚 · 姬路 — <b class="ky">京都洛北</b> 4晚 · 大原 / 八瀬 / 贵船 / 岚山</div>
+    <div class="badges">
+      <span class="badge ok">路线定稿</span>
+      <span class="badge ok">✅ 机票已出票</span>
+      <span class="badge ok">✅ 住宿全订：神户 ERA + 京都 Via Inn Prime</span>
+      <span class="badge ok">✅ 餐厅全定：露庵 9/28 · Tajimaya 9/27 · 任天堂 9/30</span>
+      <span class="badge warn">⚠️ 9/05 二次航变：回程改回上海浦东中转，10/2 16:45 起飞（CA858+CA4536，行李直挂），D7 已重排</span>
+    </div>
+  </header>
+
+  <h2>航班<span class="en">FLIGHTS · 国航 £1,235 · ✅ 已出票</span></h2>
+  <div class="tblwrap">
+  <table>
+    <tr><th>航段</th><th>航班</th><th>日期</th><th>时间</th><th>航站楼</th></tr>
+    <tr><td>伦敦 → 北京</td><td>CA852</td><td>9/25 五</td><td>12:35 LGW → 9/26 05:45 PEK <span class="muted">（中转 3h，寄快递）</span></td><td><b>LGW 北楼</b> → <b>PEK T3</b></td></tr>
+    <tr><td>北京 → 大阪</td><td>CA927</td><td>9/26 六</td><td>08:45 PEK → <b>12:40 KIX</b></td><td><b>PEK T3</b> → <b>KIX T1</b></td></tr>
+    <tr><td>大阪 → 上海</td><td>CA858</td><td>10/2 五</td><td><b>16:45 KIX</b> → <b>18:30 PVG</b> <span class="muted">（中转 2h40，行李直挂到双流）</span></td><td><b>KIX T1</b> → <b>PVG T2</b></td></tr>
+    <tr><td>上海 → 成都</td><td>CA4536</td><td>10/2 五</td><td><b>21:10 PVG</b> → <b>00:25（+1）成都双流</b></td><td><b>PVG T2</b> → <b>双流 CTU</b></td></tr>
+    <tr><td>成都 → 伦敦</td><td>CA423</td><td>10/10 六</td><td>15:55 TFU → 20:15 LHR</td><td><b>TFU T1</b> → <b>LHR T2</b></td></tr>
+  </table>
+  </div>
+
+  <div class="note" style="background:var(--panel);color:var(--ink-2)">
+    <b>航站楼备注</b><br>
+    · <b>LGW 走北楼（North）</b>——Gatwick 分南北两楼，之间有免费捷运，别下错站<br>
+    · <b>PEK 中转 3h 全在 T3 内</b>，不换楼；国航国际值机 T3C 四层，国际出发走 T3E（楼内小火车）<br>
+    · <b>KIX 走 T1</b>——T2 只服务乐桃等廉航；到达、10/2 出发、机场大巴与 Haruka 都在 T1<br>
+    · <b>回程浦东中转全在 T2</b>：CA858 到 T2、CA4536 也从 T2 走，<b>同楼中转 + 行李直挂，不用提行李</b>。流程：入境边检 → 走「国际转国内」中转通道 → 国内安检 → 登机口。同楼最短衔接 75 分钟，你有 <b>2h40m</b>，宽裕<br>
+    · ⚠️ <b>10/2 是国庆假期第二天</b>，浦东国内段高峰易延误；CA858 若晚点超 1 小时，落地先找国航中转柜台<br>
+    · ⚠️ <b>落地是双流 CTU，不是天府 TFU</b>——10/10 回英国的 CA423 从 <b>天府 T1</b> 起飞，两场相距约 60km（双流地铁 10 号线、天府 18 号线）；<b>签证行程单的到达机场要改成 CTU</b><br>
+    · <b>双流 00:25 落地</b>：地铁/机场大巴都已收班，提前约车或家人接机，出到达口约 00:45–01:00<br>
+    · <b>LHR 到 T2</b>（星空联盟航站楼）
+  </div>
+
+  <h2>每日安排<span class="en">DAY BY DAY</span></h2>
+  <p class="small muted" style="margin:-4px 0 12px">带虚线的景点名可以点开，看景点介绍。</p>
+
+  <div class="day">
+    <div class="day-date">
+      <div class="day-num">D1</div>
+      <div class="day-md">9/26</div>
+      <div class="day-wk">星期六</div>
+      <span class="stay">宿 Comfort ERA·三宫</span>
+    </div>
+    <div>
+      <p class="day-name">中午到 → 美术馆 → 三宫晚饭</p>
+      <div class="tblwrap">
+      <table class="tt">
+        <tr><td class="t">12:40</td><td>落地 <b>关西机场 KIX T1</b></td></tr>
+        <tr><td class="t">~14:15</td><td>出关取行李（按 1–1.5h），到 T1 一楼巴士站</td></tr>
+        <tr><td class="t">14:30</td><td><b>机场大巴</b>去神户三宫（<b>可刷西瓜卡/ICOCA</b>）<br><span class="nav">🚌 KIX T1 一楼 <b>6 号站台</b> → 神户三宫（ミント神戸） · 约 65 分钟 · ¥2,200/人</span></td></tr>
+        <tr><td class="t">16:00</td><td>下车步行 2–3 分钟到酒店扔行李<br><span class="nav">📍 云井通 · Comfort Hotel ERA 神户三宫</span></td></tr>
+        <tr><td class="t">16:45</td><td><b><span class="spot" role="button" tabindex="0" data-spot="hyogo">兵库县立美术馆</span></b>（安藤忠雄「艺术之馆」），<b>最后入馆 17:30、18:00 闭馆</b>，逛约 1.5h<br><span class="nav">🎫 ⚠️ 9/26 没有付费展览（馆藏展Ⅰ 9/23 结束，下一特别展 10/10 起）；<b>Ando Gallery 免费</b>，建筑本身可逛；馆藏展平时 ¥550</span><br><span class="nav">🚃 阪神「神戸三宮」→「岩屋」2 站，步行 8 分钟</span></td></tr>
+        <tr><td class="t">18:15</td><td>回三宫，<span class="spot" role="button" tabindex="0" data-spot="nankinmachi">南京町</span>一带溜达、晚餐随意（落地第一天不折腾）<br><span class="nav">🚃 阪神「岩屋」→「神戸三宮」</span></td></tr>
+      </table>
+      </div>
+      <ul class="small" style="margin-top:10px">
+        <li class="muted">航班晚点赶不上 17:30 最后入馆：美术馆周日也开，退路 D2 补；<b>周一（D3）闭馆不能挪</b></li>
+        <li class="muted">备选交通：Bay Shuttle 船（约 ¥840，倒手 5 次）——行李多不推荐</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="day">
+    <div class="day-date">
+      <div class="day-num">D2</div>
+      <div class="day-md">9/27</div>
+      <div class="day-wk">星期日</div>
+      <span class="stay">宿 Comfort ERA·三宫</span>
+    </div>
+    <div>
+      <p class="day-name">姬路 → 舞子夕阳 → Tajimaya</p>
+      <div class="tblwrap">
+      <table class="tt">
+        <tr><td class="t">~08:00</td><td>酒店出发，步行到 JR 三ノ宮</td></tr>
+        <tr><td class="t">~08:10</td><td><b>JR 新快速</b>去姬路（<b>约每 15 分钟一班</b>，车程约 40 分钟；具体班次以当天 App 为准）<br><span class="nav">🚃 JR「三ノ宮」→「姫路」</span></td></tr>
+        <tr><td class="t">~08:50</td><td>到姬路站，出站沿<b>大手前通</b>直走到城（约 1km）<br><span class="nav">🚶 JR 姫路站 → 姬路城 · 步行 15–20 分钟</span></td></tr>
+        <tr><td class="t">~09:15</td><td><b><span class="spot" role="button" tabindex="0" data-spot="himeji">姬路城</span></b>（9:00 开门，周日人多），买<b>城＋好古园联票 ¥2,600</b>（2026-03 起市外游客涨价：单买城 ¥2,500、好古园 ¥400）</td></tr>
+        <tr><td class="t">11:00</td><td><b><span class="spot" role="button" tabindex="0" data-spot="kokoen">好古园</span></b>（江户风九庭园，借景天守，联票已含）逛到 11:45</td></tr>
+        <tr><td class="t">12:00</td><td>午饭 <b>Menme（めんめ）手打乌冬</b>（站与城之间商店街，排队正常不用赶）</td></tr>
+        <tr><td class="t">14:00</td><td>去舞子（新快速到明石换普通车 2 站）<br><span class="nav">🚃 JR「姫路」→（明石换乘）→「舞子」· 约 40 分钟</span></td></tr>
+        <tr><td class="t">14:45</td><td><b><span class="spot" role="button" tabindex="0" data-spot="maiko">舞子公园</span></b>：海上步道（桥内玻璃回廊，¥300 周日价、平日 ¥250，<b>17:30 前先上</b>）→ <span class="spot" role="button" tabindex="0" data-spot="sonbun">孙文纪念馆</span>外观 → 桥下等夕阳，<b>日落约 17:50</b></td></tr>
+        <tr><td class="t">18:15</td><td><b>JR 快速</b>回三宫，18:45 前后到，回酒店放松洗漱<br><span class="nav">🚃 JR「舞子」→「三ノ宮」· 约 25 分钟</span></td></tr>
+        <tr><td class="t">20:30</td><td><b>晚餐：炭火烧肉 Tajimaya（但馬屋）</b> <span class="tag">✅ 已订</span></td></tr>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="day ky">
+    <div class="day-date">
+      <div class="day-num">D3</div>
+      <div class="day-md">9/28</div>
+      <div class="day-wk">星期一</div>
+      <span class="stay ky">宿 Via Inn Prime·京都站</span>
+    </div>
+    <div>
+      <p class="day-name">神户收尾 → 午后去京都</p>
+      <div class="tblwrap">
+      <table class="tt">
+        <tr><td class="t">08:00</td><td><b>退房，行李寄存 Comfort ERA 前台</b>，轻装出门</td></tr>
+        <tr><td class="t">08:15</td><td><b>rond sucre cafe</b>（<b>8:00 开门</b>，人气店早到免排队/售罄；10 点前进店最稳）<br><span class="nav">📍 神户市内（导航店名）</span></td></tr>
+        <tr><td class="t">09:30</td><td><b><span class="spot" role="button" tabindex="0" data-spot="meriken">美利坚公园</span></b>：<b><span class="spot" role="button" tabindex="0" data-spot="porttower">港塔展望台</span></b>（9:00 开；展望层 ¥1,000，含屋顶露台 ¥1,200，日期时间指定票）<br><span class="nav">🚃 元町/港区，地铁海岸线或步行</span></td></tr>
+        <tr><td class="t">12:30</td><td>神户午饭（南京町补漏或三宫），回 Comfort ERA 取行李</td></tr>
+        <tr><td class="t">14:00</td><td><b>JR 新快速</b>去京都（约 55 分钟直达）<br><span class="nav">🚃 JR「三ノ宮」→「京都」</span></td></tr>
+        <tr><td class="t">15:30</td><td>京都站<b>八条口出站步行 2–3 分钟入住 Via Inn Prime</b>，放好行李</td></tr>
+        <tr><td class="t">16:00</td><td><b>四条河原町购物</b>：药妆店最密（松本清/大国药妆/唐吉诃德/新京极·寺町商店街），逛到 18:00，就近走去露庵<br><span class="nav">🚃 地铁乌丸线「京都」→「四条」（或京阪到「祇园四条」）</span></td></tr>
+        <tr><td class="t">18:30</td><td><b>晚餐：露庵 菊乃井</b>（米其林二星，木屋町通四条下ル，从河原町步行约 5 分钟）晚怀石 <span class="tag">✅ 已付款</span><br><span class="nav" style="color:var(--shu)">👔 smart casual · 已电话确认：非凉鞋（德训 OK）+ 纯色正式点的袜子（不光脚上榻榻米）</span></td></tr>
+        <tr><td class="t">晚</td><td>回八条口泡 Via Inn <b>大浴场</b>解乏<br><span class="nav">🚃 地铁乌丸线「四条」→「京都」</span></td></tr>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="day ky">
+    <div class="day-date">
+      <div class="day-num">D4</div>
+      <div class="day-md">9/29</div>
+      <div class="day-wk">星期二</div>
+      <span class="stay ky">宿 Via Inn Prime·京都站</span>
+    </div>
+    <div>
+      <p class="day-name">天授庵 · 南禅寺 · 永观堂 · 哲学之道 · 银阁寺</p>
+      <div class="tblwrap">
+      <table class="tt">
+        <tr><td class="t">09:00</td><td>出门去蹴上（乌丸御池换乘）<br><span class="nav">🚃 地铁乌丸线「京都」→「乌丸御池」换东西线 →「蹴上」· 约 15 分钟</span></td></tr>
+        <tr><td class="t">09:15</td><td>蹴上出站穿「ねじりまんぽ」砖隧道；<b><span class="spot" role="button" tabindex="0" data-spot="tenjuan">天授庵</span></b>（枯山水+池泉两庭，¥500，约 40 分钟）<br><span class="nav">🚶 蹴上站步行 5 分钟</span></td></tr>
+        <tr><td class="t">10:15</td><td><b><span class="spot" role="button" tabindex="0" data-spot="nanzenji">南禅寺</span></b>：三门登楼（¥600）、<b><span class="spot" role="button" tabindex="0" data-spot="nanzenji">方丈庭园</span></b>（¥600，约 30 分钟）、红砖<b><span class="spot" role="button" tabindex="0" data-spot="suirokaku">水路阁</span></b>（免费）</td></tr>
+        <tr><td class="t">11:30</td><td><b><span class="spot" role="button" tabindex="0" data-spot="eikando">永观堂</span></b>（回首阿弥陀，¥600；九月绿枫人少）<br><span class="nav">🚶 步行约 10 分钟</span></td></tr>
+        <tr><td class="t">12:45</td><td>午饭（永观堂/哲学之道南端简单吃）</td></tr>
+        <tr><td class="t">13:30</td><td><b><span class="spot" role="button" tabindex="0" data-spot="tetsugaku">哲学之道</span></b> 2km 缓走 30–45 分钟 → <b><span class="spot" role="button" tabindex="0" data-spot="ginkakuji">银阁寺</span></b>（¥1,000，2026-04 起涨价），逛 1 小时</td></tr>
+        <tr><td class="t">15:30</td><td>银阁寺道坐巴士<b>在四条河原町下车</b>：补逛药妆（D3 没扫够的这里补）+ 傍晚吃晚饭，逛好地铁回八条口<br><span class="nav">🚌 市巴士「银阁寺道」→「四条河原町」约 30 分钟；回程地铁「四条」→「京都」</span></td></tr>
+        <tr><td class="t">备</td><td class="muted">或先去出町柳顺访<b><span class="spot" role="button" tabindex="0" data-spot="shimogamo">下鸭神社·糺之森</span></b>（黄昏）再回四条河原町</td></tr>
+      </table>
+      </div>
+      <ul class="small" style="margin-top:10px">
+        <li class="muted">门票合计 ¥3,300（天授庵 ¥500 + 南禅寺三门 ¥600 + 方丈庭园 ¥600 + 永观堂 ¥600 + 银阁寺 ¥1,000）；地铁+巴士几百日元</li>
+        <li class="muted">备选（仅当露庵被拒）：瓢亭本店午怀石（三星，南禅寺门前，约 ¥3.2 万+，入店 12:00–13:00 约 2h，电话 +81 75-771-4116）——订上则下午改：永观堂 14:15 → 哲学之道 → 银阁寺 16:00 进门，无余量</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="day ky">
+    <div class="day-date">
+      <div class="day-num">D5</div>
+      <div class="day-md">9/30</div>
+      <div class="day-wk">星期三</div>
+      <span class="stay ky">宿 Via Inn Prime·京都站</span>
+    </div>
+    <div>
+      <p class="day-name">宇治 · 任天堂博物馆 15:00 场 <span class="tag">✅ 已购票</span></p>
+      <div class="tblwrap">
+      <table class="tt">
+        <tr><td class="t">09:30</td><td>出门（酒店到站台 5 分钟）</td></tr>
+        <tr><td class="t">09:40</td><td><b>JR 奈良线快速</b>直达宇治（约 17 分钟，西岸下车）<br><span class="nav">🚃 JR「京都」→「宇治」</span></td></tr>
+        <tr><td class="t">10:00</td><td><b><span class="spot" role="button" tabindex="0" data-spot="byodoin">平等院</span></b>（庭园+凤翔馆 ¥700；不进凤凰堂内部）→ 过桥东岸<b><span class="spot" role="button" tabindex="0" data-spot="ujigami">宇治上神社</span></b>（世界遗产，免费）、<span class="spot" role="button" tabindex="0" data-spot="ujijinja">宇治神社</span>（免费）、<span class="spot" role="button" tabindex="0" data-spot="tonoshima">朝雾桥</span>、<span class="spot" role="button" tabindex="0" data-spot="tonoshima">塔之岛</span><br><span class="nav">🚶 宇治站步行</span></td></tr>
+        <tr><td class="t">12:00</td><td>表参道午饭+抹茶甜品（中村藤吉/通圆/伊藤久右卫门，<b>12 点前进店避排队</b>），下午河边溜达</td></tr>
+        <tr><td class="t">14:00</td><td><b>步行去博物馆</b>：平等院一带 → 约 2.4km 平路 30 分钟直达<br><span class="nav">🚶 步行（雨/累则 JR「宇治」→「小仓」1 站再走 8 分钟）</span></td></tr>
+        <tr><td class="t">15:00</td><td><b><span class="spot" role="button" tabindex="0" data-spot="nintendo">任天堂博物馆</span>入场窗口 15:00–15:30</b>（¥3,300/人，已购），玩到 18:00 闭馆（约 3h）。QR 入馆，互动区用馆内 IC 币<br><span class="nav">🚶 JR 小仓站步行 8 分钟</span></td></tr>
+        <tr><td class="t">18:15</td><td><b>JR</b> 回京都站（约 25 分钟），出站即到家；晚饭站内 Porta/拉面小路<br><span class="nav">🚃 JR「小倉」→「京都」</span></td></tr>
+      </table>
+      </div>
+      <p class="small muted" style="margin-top:8px"><b>今晚早点休息——明天 D6 06:30 包车出发。</b>回京都站时在八条口<b>志津屋</b>买好明天车上吃的面包（营业到 22:00；招牌カルネ夹火腿，不是素的）。</p>
+    </div>
+  </div>
+
+  <div class="day ky star">
+    <div class="day-date">
+      <div class="day-num">D6 ⭐</div>
+      <div class="day-md">10/1</div>
+      <div class="day-wk">星期四</div>
+      <span class="stay ky">宿 Via Inn Prime·京都站</span>
+    </div>
+    <div>
+      <p class="day-name"><span class="flag">核心日</span> 包车：贵船 → 三千院 → 瑠璃光院 → 岚山</p>
+      <p class="small muted" style="margin:0">瑠璃光院秋季拝观<b>今天开门</b>，此日锁死。<b>包车 6:30 酒店接、岚山（爱宕念佛寺）结束</b>；报价 10 小时 ¥1,850 人民币（含停车、过路费），实际约用 7 小时。</p>
+      <div class="tblwrap">
+      <table class="tt">
+        <tr><td class="t">06:30</td><td>Via Inn 八条口门口上车（面包前一晚在志津屋买好）<br><span class="nav">🚗 京都站 → 贵船 约 40 分钟</span></td></tr>
+        <tr><td class="t">07:10</td><td><b><span class="spot" role="button" tabindex="0" data-spot="kifune">贵船神社</span></b> 1 小时：本宫 → 结社 → 奥宫，车在奥宫接<br><span class="nav">🕘 6:00–20:00（5–11 月），免费；授与所 9:00–17:00，水占卜此时还买不到</span></td></tr>
+        <tr><td class="t">08:10</td><td>去大原，下车走参道上去（10 分钟）<br><span class="nav">🚗 贵船 → 大原 约 20–25 分钟</span></td></tr>
+        <tr><td class="t">09:00</td><td><b><span class="spot" role="button" tabindex="0" data-spot="sanzenin">三千院</span></b> 2 小时：先在<b>客殿喝抹茶看聚碧园</b>（¥500）→ 宸殿 → 有清园苔庭 → 往生极乐院<br><span class="nav">🕘 9:00–17:00（3–10 月），全年无休 · ¥700</span></td></tr>
+        <tr><td class="t">11:10</td><td>下山上车 → 八瀬駅前下车（特别拜观期间车开不到寺门口）→ 步行 7 分钟<br><span class="nav">🚗 大原 → 八瀬 约 15 分钟</span></td></tr>
+        <tr><td class="t">11:30</td><td><b><span class="spot" role="button" tabindex="0" data-spot="rurikoin">瑠璃光院</span></b> 30 分钟：书院二楼漆桌倒影<br><span class="nav">🕘 10:00–17:00，16:30 停止受理 · ¥2,000 现金 · 10/1 秋季首日免预约</span></td></tr>
+        <tr style="background:var(--warn-bg)"><td class="t">可选</td><td>🔸<b>【看情况加 · 时间不够就不去】<span class="spot" role="button" tabindex="0" data-spot="kinkakuji">金阁寺</span></b> 45 分钟<br><span class="nav">🕘 9:00–17:00 · ¥500</span><br><span class="small">加的话：瑠璃光院出来先开去金阁寺（约 40 分钟），12:40–13:25 参观，再开去爱宕念佛寺（约 20–25 分钟）。下面各站整体晚约 1 小时：常寂光寺约 16:10 到（16:30 停止受理），日落前的空档没了，天龙寺也来不及</span></td></tr>
+        <tr><td class="t">12:05</td><td>上车去爱宕念佛寺，<b>车上吃面包</b><br><span class="nav">🚗 八瀬 → 奥嵯峨 约 17km、45 分钟</span></td></tr>
+        <tr><td class="t">12:50</td><td><b><span class="spot" role="button" tabindex="0" data-spot="otagi">爱宕念佛寺</span></b>：1200 尊罗汉石像，约 50 分钟。<b>包车在这里结束</b><br><span class="nav">🕘 受理 9:00–16:15，周三、周六休（10/1 周四开）· ¥1,000</span></td></tr>
+        <tr><td class="t">13:40</td><td>沿<b><span class="spot" role="button" tabindex="0" data-spot="toriimoto">嵯峨鸟居本</span></b>老街下坡<br><span class="nav">🚶 约 25 分钟（坐车 5 分钟）</span></td></tr>
+        <tr><td class="t">14:05</td><td><b><span class="spot" role="button" tabindex="0" data-spot="giouji">祇王寺</span></b> 1 小时：苔庭，坐着发呆<br><span class="nav">🕘 9:00–16:50，16:30 停止受理 · ¥500</span></td></tr>
+        <tr><td class="t">15:05</td><td>经二尊院门口去常寂光寺<br><span class="nav">🚶 约 10 分钟</span></td></tr>
+        <tr><td class="t">15:15</td><td><b><span class="spot" role="button" tabindex="0" data-spot="jojakkoji">常寂光寺</span></b>：半山坡远眺嵯峨野，约 45 分钟<br><span class="nav">🕘 9:00–17:00，16:30 停止受理 · ¥600</span></td></tr>
+        <tr><td class="t">16:00</td><td>经<span class="spot" role="button" tabindex="0" data-spot="nonomiya">野宫神社</span>去竹林<br><span class="nav">🚶 约 20 分钟</span></td></tr>
+        <tr><td class="t">16:20</td><td><b><span class="spot" role="button" tabindex="0" data-spot="chikurin">竹林小径</span></b><br><span class="nav">🕘 全天开放 · 免费</span></td></tr>
+        <tr style="background:var(--warn-bg)"><td class="t">可选</td><td>🔸<b>【看情况加 · 时间不够就不去】<span class="spot" role="button" tabindex="0" data-spot="tenryuji">天龙寺</span></b>：竹林出来就是北门<br><span class="nav">🕘 庭园 8:30–17:00，16:50 停止受理 · ¥500；大方丈 16:30 停止受理，另付 ¥300</span><br><span class="small">按上面的时间约 16:40 进，只能看庭园约 20 分钟，大方丈进不去；前面加了金阁寺就不去</span></td></tr>
+        <tr><td class="t">16:45</td><td><span class="spot" role="button" tabindex="0" data-spot="togetsukyo">渡月桥</span>一带自由活动，<b>17:42 日落</b></td></tr>
+        <tr><td class="t">18:00</td><td>回市区吃晚饭<br><span class="nav">🚃 JR「嵯峨嵐山」→「京都」约 15 分钟；去河原町坐阪急（桂换乘）约 30 分钟</span></td></tr>
+      </table>
+      </div>
+      <ul class="small" style="margin-top:10px">
+        <li>06:30 到 16:40 走完竹林，共约 <b>10 小时 10 分</b>；包车用到约 12:50。另一种用法：车在爱宕念佛寺等，再送到祇王寺（5 分钟），用到约 13:45</li>
+        <li><b>机动</b>：常寂光寺出来到日落前约 1 小时空档，瑠璃光院如果排队就从这里扣</li>
+      </ul>
+      <details class="small" style="margin-top:10px">
+      <summary>备选：公交版（包车订不成时用）</summary>
+      <div class="tblwrap">
+      <table class="tt">
+        <tr><td class="t">07:25</td><td>出门：Via Inn 在八条口，<b>穿站内自由通路到北侧（乌丸口）巴士站台约 6–8 分钟</b></td></tr>
+        <tr><td class="t">07:35</td><td><b>17 路巴士</b>（往大原），<b>始发有座</b>，约 60 分钟<br><span class="nav">🚌 京都站前 C3 站台 → 大原</span></td></tr>
+        <tr><td class="t">09:00</td><td>大原，呂川参道上坡 10 分钟 → <b><span class="spot" role="button" tabindex="0" data-spot="sanzenin">三千院</span></b>（苔庭、往生极乐院）约 1.5h</td></tr>
+        <tr><td class="t">11:00</td><td>大原参道<b>早午饭</b>（八瀬和贵船选择少，饭在大原解决）</td></tr>
+        <tr><td class="t">11:45</td><td><b>17/19 路</b>往市区方向 15 分钟 → 八瀬駅前<br><span class="nav">🚌 大原 →「八瀬駅前」</span></td></tr>
+        <tr><td class="t">12:00</td><td><b><span class="spot" role="button" tabindex="0" data-spot="rurikoin">瑠璃光院</span></b>：书院二楼漆桌倒影机位。<b>✅ 10/1 秋季拝观开幕首日、免预约</b>（现场 ¥2,000 现金，10:00–17:00），红叶未红人相对少<br><span class="nav">🚶 八瀬駅前步行 5 分钟</span></td></tr>
+        <tr><td class="t">13:40</td><td>步行到叡电站 → 宝池换鞍马线 → 贵船口（约 30 分钟）<br><span class="nav">🚃 叡电「八瀬比叡山口」→「宝池」换乘 →「贵船口」</span></td></tr>
+        <tr><td class="t">14:20</td><td><b>京都巴士 33 路</b> 5 分钟 → 贵船<br><span class="nav">🚌「贵船口」→「贵船」</span></td></tr>
+        <tr><td class="t">14:30</td><td><b><span class="spot" role="button" tabindex="0" data-spot="kifune">贵船神社</span></b>：本宫石阶灯笼 → 结社 → 奥宫（往返步行约 40 分钟）</td></tr>
+        <tr><td class="t">16:45</td><td>巴士 33 回贵船口 → 叡电约 30 分钟 → 出町柳 17:30 前后<br><span class="nav">🚌🚃「贵船」→「贵船口」→ 叡电「出町柳」</span></td></tr>
+        <tr><td class="t">晚上</td><td>出町柳顺访下鸭神社黄昏走走 → 回京都站（约 35 分钟）；或先在河原町吃晚饭再回<br><span class="nav">🚃 京阪「出町柳」→「东福寺」换 JR →「京都」</span></td></tr>
+      </table>
+      </div>
+      <ul class="small" style="margin-top:10px">
+        <li>网传「瑠璃光院后坐巴士到宝池再上叡电」是绕路——<b>直接走去八瀬比叡山口上叡电更快</b>，10–15 分钟一班</li>
+        <li>叡电只坐两段（约 ¥900），ICOCA 直刷，不用一日券</li>
+        <li>若排队远超预期，贵船段有弹性（神社 18 点前都开）</li>
+      </ul>
+      </details>
+    </div>
+  </div>
+
+  <div class="day ky">
+    <div class="day-date">
+      <div class="day-num">D7</div>
+      <div class="day-md">10/2</div>
+      <div class="day-wk">星期五</div>
+      <span class="stay none">离境</span>
+    </div>
+    <div>
+      <p class="day-name">京都 → 关西机场 · 上午不安排 <span class="tag plain">16:45 起飞 · 浦东转机</span></p>
+      <div class="tblwrap">
+      <table class="tt">
+        <tr><td class="t">上午</td><td><b>不安排</b>，退房后行李寄存 Via Inn 前台</td></tr>
+        <tr><td class="t">12:00</td><td>回酒店取行李，京都站简单吃点</td></tr>
+        <tr><td class="t">12:30</td><td><b>Haruka 特急</b>（京都站 30 号月台，约每 30 分钟一班，80 分钟）→ <b>13:50 到 KIX T1</b><br><span class="nav">🚃 JR「京都」→「関西空港」</span></td></tr>
+        <tr><td class="t">14:15</td><td>值机托运（<b>行李直挂到成都双流</b>）、出境、免税店</td></tr>
+        <tr><td class="t">16:45</td><td><b>CA858 起飞</b> → 18:30 到浦东 T2</td></tr>
+        <tr><td class="t">21:10</td><td><b>CA4536 浦东 T2 起飞</b> → <b>00:25（+1）落双流</b></td></tr>
+      </table>
+      </div>
+      <p class="small muted" style="margin-top:8px">兜底：最晚坐 13:00 前后的 Haruka（14:20 到 KIX，起飞前 2h25）；再晚就紧了，国际线值机截止一般为起飞前 1h。</p>
+    </div>
+  </div>
+
+  <div class="note" style="background:var(--kyoto-bg);color:var(--kyoto)">
+    ✅ <b>瑠璃光院已确认</b>：2026 秋季拝观 10/1 开幕，<b>10/1–11/7 免预约</b>（现场 ¥2,000 现金，10:00–17:00）；需预约期是 11/8–12/7，与 D6 无关。单点风险解除。
+  </div>
+
+  <h2>交通与花费<span class="en">TRANSPORT</span></h2>
+  <p class="small">不买周游券，全程 <b>ICOCA / Suica</b> 刷到底（手机 Apple Pay 可直接开卡）。</p>
+  <div class="tblwrap">
+  <table>
+    <tr><th>段</th><th>车费（单程）</th></tr>
+    <tr><td>D1 机场大巴 KIX → 三宫（ミント神戸）</td><td>¥2,200/人（备选船+Port Liner 约 ¥840）</td></tr>
+    <tr><td>D2 三宫 → 姬路 → 舞子 → 三宫</td><td>全天合计约 ¥2,000</td></tr>
+    <tr><td>D3 三宫 → 京都</td><td>¥1,110</td></tr>
+    <tr><td>D5 京阪去宇治 + JR 小仓 + 回京都</td><td>约 ¥1,000</td></tr>
+    <tr><td>D6 包车（6:30 酒店接、岚山结束，含停车、过路费）+ 岚山回京都 JR</td><td>报价 10 小时 ¥1,850 人民币 + ¥240/人</td></tr>
+    <tr><td>D7 Haruka 京都 → KIX</td><td>约 ¥3,600</td></tr>
+  </table>
+  </div>
+
+  <h2>门票<span class="en">ADMISSION · 每人</span></h2>
+  <div class="tblwrap">
+  <table>
+    <tr><th>天</th><th>项目</th><th>每人</th></tr>
+    <tr><td>D1</td><td>兵库县立美术馆：9/26 没有付费展，Ando Gallery 免费（馆藏展平时 ¥550）</td><td>¥0</td></tr>
+    <tr><td>D2</td><td>姬路城＋好古园联票 ¥2,600 · 舞子海上步道 ¥300（周日）</td><td>¥2,900</td></tr>
+    <tr><td>D3</td><td>神户港塔（含屋顶露台）¥1,200</td><td>¥1,200</td></tr>
+    <tr><td>D4</td><td>天授庵 ¥500 · 南禅寺三门 ¥600 · 南禅寺方丈庭园 ¥600 · 永观堂 ¥600 · 银阁寺 ¥1,000</td><td>¥3,300</td></tr>
+    <tr><td>D5</td><td>平等院 ¥700 · 任天堂博物馆 ¥3,300（已购）</td><td>¥4,000</td></tr>
+    <tr><td>D6</td><td>贵船神社 免费 · 三千院 ¥700 · 客殿抹茶 ¥500 · 瑠璃光院 ¥2,000（现金）· 爱宕念佛寺 ¥1,000 · 祇王寺 ¥500 · 常寂光寺 ¥600 · 竹林 免费 · <span class="muted">可选（看情况）：金阁寺 ¥500、天龙寺 ¥500（大方丈另 ¥300）</span></td><td>¥5,300</td></tr>
+    <tr><td>D7</td><td>—</td><td>¥0</td></tr>
+    <tr><td colspan="2"><b>合计（不含可选的金阁寺、天龙寺）</b>，两人 ¥33,400；两处都去每人再 +¥1,000（天龙寺进大方丈再 +¥300）</td><td><b>¥16,700</b></td></tr>
+  </table>
+  </div>
+
+  <h2>待办<span class="en">TO DO</span></h2>
+  <ul class="todo">
+    <li style="opacity:.55"><span class="box" style="background:var(--kyoto);border-color:var(--kyoto)"></span><span>✅ 机票已出票（7/14 国航）→ 8/20 改北京中转 → ⚠️ 9/05 改回上海浦东中转：CA858 16:45→18:30 + CA4536 21:10→00:25，T2 同楼、行李直挂，D7 已重排</span></li>
+    <li class="p1"><span class="box"></span><span>10/2 深夜双流接机
+      <span class="sub">00:25 落地，地铁 10 号线与机场大巴都已收班——提前约车或让家里人接，出到达口约 00:45–01:00</span></span></li>
+    <li class="p1"><span class="box"></span><span>改签证行程单/在留材料的到达机场：天府 TFU → 双流 CTU
+      <span class="sub">10/10 回英国的 CA423 仍从天府 T1 起飞，两场相距约 60km，别搞混</span></span></li>
+    <li style="opacity:.55"><span class="box" style="background:var(--kyoto);border-color:var(--kyoto)"></span><span>✅ 京都：Via Inn Prime 京都站八条口 ×4 晚（约 £230，大浴场）</span></li>
+    <li style="opacity:.55"><span class="box" style="background:var(--kyoto);border-color:var(--kyoto)"></span><span>✅ 神户：Comfort Hotel ERA 三宫 ×2 晚（约 £160，双床含早）</span></li>
+    <li style="opacity:.55"><span class="box" style="background:var(--kyoto);border-color:var(--kyoto)"></span><span>✅ 露庵 9/28 18:30 已付款（smart casual · 非凉鞋+纯色正式袜子）· Tajimaya 9/27 20:30 已订</span></li>
+    <li style="opacity:.55"><span class="box" style="background:var(--kyoto);border-color:var(--kyoto)"></span><span>✅ 瑠璃光院确认：10/1 免预约（¥2,000 现金，10:00–17:00）</span></li>
+    <li class="p1"><span class="box"></span><span>D6 包车跟对方确认：6:30 Via Inn 接、岚山（爱宕念佛寺）结束、按实际约 7–8 小时谈价
+      <span class="sub">另问：早间加价、超时费、中文司机/车型、取消规则（看 10/1 天气预报）</span></span></li>
+    <li><span class="box"></span><span>9/30 晚回京都站时在八条口志津屋买好 D6 车上吃的面包（招牌カルネ夹火腿，不是素的）</span></li>
+    <li><span class="box"></span><span>兵库县立美术馆 9/26：官网日程显示没有付费展览（馆藏展Ⅰ 9/23 结束，下一特别展 10/10 起），Ando Gallery 免费——出发前打 078-262-1011 确认当天开馆</span></li>
+    <li><span class="box"></span><span>确认西瓜卡（旧卡能不能用/有余额）；如无 → 确认手机 Apple Pay 加 Suica 流程，出发前加卡预充值</span></li>
+    <li><span class="box"></span><span>出发前查关空→三宫机场大巴时刻（目标 14:30–15:00 班次）</span></li>
+  </ul>
+
+  <h2>存档<span class="en">ARCHIVE</span></h2>
+
+  <details>
+    <summary>已否决的方案（免得回头再议）</summary>
+    <ul>
+      <li><b>Amex 积分酒店方案</b>（Hilton Kyoto / 神户万豪）：国庆周 award 飞天（Hilton Kyoto 16.9 万 HH/晚），全程现金自订，70k 分留用。ROKU、安缦亦不考虑。</li>
+      <li><b>味鉄 舞子店（D2 晚饭）</b>：不一定吃、三宫选择够多，砍。想复活乐天 Gurunavi 可在线订。</li>
+      <li><b>明石海峡大桥 Bridge World 塔顶体验</b>：¥5,500–6,600、场次（9:00/13:15）与 D2 节奏冲突，砍。海上步道足矣。</li>
+      <li><b>四条大宫住宿</b>：无地铁/JR/京阪，天天三段换乘，便宜不值，砍。</li>
+      <li><b>北野异人馆、摩耶山掬星台夜景、Harborland 港口夜景</b>：没兴趣，砍。港区留 D3 上午美利坚公园＋港塔一段。</li>
+      <li><b>有马温泉</b>：九月还不够冷，不泡。砍。</li>
+      <li><b>大阪半日</b>（D7 存行李逛黑门/道顿堀）：改为京都直接 Haruka 去机场。</li>
+      <li><b>京都东山/岚山经典线</b>（清水寺、金阁寺、竹林）：去过了，这次走洛北。</li>
+      <li><b>贵船川床</b>：合并日下午才到贵船，对不上午间川床；且 9 月底已是尾季。想吃再议。</li>
+      <li><b>纪伊胜浦/熊野线</b>（那智大社、大门坂、浦岛酒店）：整段砍掉。若复活：胜浦住浦岛酒店（洞窟温泉「忘归洞」），大门坂 → 那智大社 → 三重塔瀑布机位在青岸渡寺后侧，黑潮号回大阪约 4h。</li>
+      <li><b>奈良</b>：没排进去；从京都 JR 45 分钟可达。</li>
+      <li>和歌山市、白滨、汤峰温泉进山线、熊野本宫大社：均砍。</li>
+      <li><b>为瑠璃光院改签 9/27 到</b>：不改——室内隔窗看庭院，下雨不影响，单点风险可接受。</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>改动记录</summary>
+    <ul>
+      <li><b>9-13（景点介绍）</b>：时间线里的景点名加虚线，点击弹出介绍（日文名、历史、看点、提示），共 32 个景点。</li>
+      <li><b>9-13（取舍）</b>：不坐 Mosaic 摩天轮、不进平等院凤凰堂内部；D4 加南禅寺方丈庭园（¥600），永观堂起顺延 30 分钟。D6 金阁寺、天龙寺作为"看情况加，不行就不去"的可选行放进时间线对应位置，原时间不变。门票每人合计 ¥16,700。</li>
+      <li><b>9-13（门票）</b>：全程标注门票并新增门票汇总表（每人合计 ¥16,100，不含可选项）。更新：姬路城＋好古园联票 ¥1,050 → ¥2,600（2026-03 市外游客涨价）、银阁寺 ¥500 → ¥1,000（2026-04 涨价）、港塔改为 ¥1,000 / ¥1,200。发现兵库县立美术馆 9/26 没有付费展（Ando Gallery 免费），待电话确认开馆。</li>
+      <li><b>9-13（D6 包车 · D7 上午留空）</b>：D6 改包车——6:30 贵船 → 9:00 三千院（客殿抹茶）→ 11:30 瑠璃光院 → 爱宕念佛寺（包车结束）→ 祇王寺 → 常寂光寺 → 竹林 → 渡月桥日落，全程标注开放时间；金阁寺、天龙寺列为可加回。原公交版折叠为备选。D7 上午不安排（伏见稻荷、东寺删除）。未排入：西芳寺（10/1 只有上午时段）、祐斎亭（周四休馆）。</li>
+      <li><b>9-05（二次航变·回上海）</b>：北京中转没位置，改回上海浦东中转——<b>CA858 KIX 16:45 → PVG T2 18:30</b>、<b>CA4536 PVG T2 21:10 → 双流 00:25（+1）</b>，同楼中转 2h40m、行李直挂。D7 恢复上午自由半日（伏见稻荷/东寺/站内购物），12:30 上 Haruka。新增待办：深夜双流接机、行程单到达机场改 CTU。</li>
+      <li><b>8-20（航变）</b>：回程改北京中转——10/2 <b>14:00 KIX 起飞</b>（原 CA858/CA4536 上海中转 16:45 作废）。D7 提前：9:30 京都站上 Haruka、10:50 到 KIX；上午自由活动取消。航班号/中转时刻待补录。</li>
+      <li><b>7-15（D1 交通）</b>：两人四箱，关空→神户改机场大巴直达（ミント神戸下车即 ERA），Bay Shuttle 降为备选。</li>
+      <li><b>8月</b>：✅ 餐厅全定——露庵 9/28 18:30 已付款（dress code smart casual + 带袜子）、Tajimaya 9/27 20:30 已订、任天堂 9/30 15:00。Tajimaya 由 D1 挪到 D2；瓢亭别馆早粥砍掉，D7 早餐就近随意。</li>
+      <li><b>7-23</b>：✅ 瑠璃光院确认——10/1 秋季拝观开幕、免预约（¥2,000 现金，10:00–17:00），需预约期 11/8–12/7，单点风险解除。</li>
+      <li><b>7-15（露庵）</b>：店方回邮——九月预约 8/1 才开始受理；待办改为 8/1 邮件+电话双管订 9/28 周一晚。</li>
+      <li><b>7-15</b>：✅ 住宿全订——神户 Comfort ERA ×2（£160 双床含早）+ 京都 Via Inn Prime 八条口 ×4（£230 大浴场），全文收敛为京都站基地。怀石定案：D3 晚露庵（邮件预约中）、备选 D4 瓢亭本店午怀石、D7 早餐瓢亭别馆朝がゆ。Kyoto Waka £189 识破：实距京都站 1.7km，弃。</li>
+      <li><b>7-14</b>：✅ 机票出票（国航，零调整）。积分酒店全放弃（Hilton Kyoto 16.9 万/晚），京都改四晚一家住到底、三选一待定；D1 晚饭定 Tajimaya（8/26 电话订）、D2 午饭 Menme、D3 加 rond sucre cafe；味鉄、Bridge World 砍。</li>
+      <li><b>7-13（十一改）</b>：京都住宿两段式——前两晚京都站前（现金），后两晚 Hilton Kyoto 河原町三条（Amex 积分）。D4 改京都站出发，D5 改 JR 环线+傍晚顺路换酒店，D6 改希尔顿门口上车。</li>
+      <li><b>7-13（十改）</b>：抢到 9/30 任天堂博物馆 15:00–15:30 入场票 ✅，D5 恢复宇治+任天堂。</li>
+      <li><b>7-13（九改）</b>：任天堂博物馆砍掉（抽选已过），D5 改宇治纯闲逛日。</li>
+      <li><b>7-13（八改）</b>：D5 定稿——上午宇治川两岸，16:00 任天堂博物馆（JR 小仓）。全部七天排定。</li>
+      <li><b>7-13（七改）</b>：D4 定稿——天授庵→南禅寺→永观堂→哲学之道→银阁寺；只剩 D5 待自排。</li>
+      <li><b>7-13（六改）</b>：神户改两天半——D1 直奔美术馆、晚上三宫南京町；D2 姬路后舞子看夕阳；D3 上午美利坚公园+港塔、午后进京都；伏见稻荷/宇治入候选池。</li>
+      <li><b>7-13（五改）</b>：神户按兴趣重排——砍北野/摩耶山/Harborland 夜景；D2 改「姬路+好古园 → 舞子 → 兵库县立美术馆」一条线；D1 加港塔。</li>
+      <li><b>7-13（出票尝试）</b>：官网支付报错，机票回到待购买；行程仍按该航班定稿。</li>
+      <li><b>7-13（四改）</b>：洛北三点（三千院/瑠璃光院/贵船）合并进 D6 一天；瑠璃光院→贵船改叡电直上。D4/D5 空出待自排。</li>
+      <li><b>7-13（三改）</b>：京都改洛北线，神户 2 晚＋京都 4 晚；D2 姬路为主、有马砍掉；D7 京都直接 Haruka。</li>
+      <li><b>7-13（二改）</b>：砍纪伊胜浦/熊野，改神户＋京都。</li>
+      <li><b>7-13（一改）</b>：按方案 B 重排 7 天 6 晚，D1 改中午到。</li>
+      <li><b>7-12</b>：路线定稿（6 天 5 晚版，含纪伊胜浦/熊野）。</li>
+    </ul>
+  </details>
+
+  <div class="foot">关西七日 · 2026.9.26 – 10.2 · 更新于 2026-08-20</div>
+
+</div>
+
+
+<dialog id="spotDlg" aria-labelledby="spotTitle">
+  <button class="dlg-x" type="button" aria-label="关闭">×</button>
+  <div class="dlg-body">
+    <p class="dlg-jp"></p>
+    <h3 id="spotTitle"></h3>
+    <p class="dlg-intro"></p>
+    <ul class="dlg-pts"></ul>
+    <p class="dlg-tip"></p>
+  </div>
+</dialog>
+<script>
+const SPOTS = {
+"hyogo": {
+"name": "兵库县立美术馆",
+"jp": "兵庫県立美術館",
+"tag": "安藤忠雄建筑",
+"intro": "2002 年开馆，是 1995 年阪神・淡路大地震后「文化复兴」的象征，由安藤忠雄设计，是西日本最大级的美术馆之一。清水混凝土、玻璃和面海的回廊，建筑本身就值得一看。",
+"pts": [
+"「海之甲板」上的巨型<b>青苹果</b>：安藤本人捐赠，灵感来自萨缪尔・厄尔曼的诗《青春》",
+"<b>Ando Gallery</b>（2019 年开放，免费）：安藤的建筑模型、手稿和藏书",
+"螺旋楼梯、圆形露台和面海的大阶梯"
+],
+"tip": "9/26 没有付费展览（馆藏展 9/23 结束，下一展 10/10 起），能看 Ando Gallery 和建筑本身；出发前打 078-262-1011 确认当天开馆。"
+},
+"nankinmachi": {
+"name": "南京町",
+"jp": "南京町",
+"tag": "神户中华街",
+"intro": "与横滨、长崎并称日本三大中华街。1868 年神户开港后华侨在这里聚居，如今约有上百家店。",
+"pts": [
+"东入口的「长安门」牌楼",
+"边走边吃：老祥记的猪肉包子（据说是日本「豚まん」的起源）、小笼包、烤鸭卷"
+],
+"tip": "不少摊位晚上收得早，看完美术馆别拖太晚。"
+},
+"himeji": {
+"name": "姬路城",
+"jp": "姫路城",
+"tag": "世界遗产 · 国宝",
+"intro": "1993 年与法隆寺一起成为日本首批世界文化遗产。现存大天守建于 1609 年（池田辉政），白色灰泥外墙像展翅的白鹭，别名「白鹭城」。战乱和二战空袭都没毁掉它，是日本保存最完整的原装天守。",
+"pts": [
+"登大天守：内部是陡峭的木楼梯，一直走到最顶层，俯瞰城下町",
+"迷宫一样的登城路线：本来就是为了让来犯的敌人绕晕",
+"西之丸的百间廊下，和千姬的故事"
+],
+"tip": "周日人多，9:00 开门就进。上天守要脱鞋拎着走，穿好脱的鞋。"
+},
+"kokoen": {
+"name": "好古园",
+"jp": "好古園",
+"tag": "日式庭园",
+"intro": "1992 年为纪念姬路建市 100 周年，在姬路城西御屋敷遗址上建成。由 9 座风格不同的日式庭园组成，以姬路城为借景。",
+"pts": [
+"御屋敷之庭：瀑布和锦鲤池，是园里最大的池泉庭园",
+"竹之庭、松之庭等一座连一座，走一圈约 40 分钟"
+],
+"tip": "城＋好古园联票已含。"
+},
+"maiko": {
+"name": "舞子公园・明石海峡大桥",
+"jp": "舞子公園・明石海峡大橋",
+"tag": "世界级悬索桥",
+"intro": "明石海峡大桥 1998 年通车，中央跨度 1,991m，长期保持世界最长悬索桥纪录（2022 年被土耳其恰纳卡莱 1915 大桥超过）。舞子公园就在桥脚下的海边。",
+"pts": [
+"<b>舞子海上步道</b>：走进桥体内部、离海面约 47m 的回廊，有一段玻璃地板",
+"桥下的松林和海滩，日落时桥塔剪影很好看",
+"晚上大桥会点灯"
+],
+"tip": "海上步道周日 ¥300，17:30 前上去。"
+},
+"sonbun": {
+"name": "孙文纪念馆（移情阁）",
+"jp": "孫文記念館（移情閣）",
+"tag": "国家重要文化财",
+"intro": "1915 年华侨富商吴锦堂为庆祝六十大寿和隐退而建的别墅，取名「移情阁」寄托思乡之情。八角三层、高约 24m，是日本最古老的混凝土砌块建筑之一；从外面看像六角形，本地人叫它「舞子的六角堂」。",
+"pts": [
+"现在是日本唯一纪念孙中山的博物馆",
+"行程里只看外观"
+],
+"tip": ""
+},
+"meriken": {
+"name": "美利坚公园",
+"jp": "メリケンパーク",
+"tag": "神户港",
+"intro": "「メリケン」是明治时代日本人对 American 的发音，因为旁边曾有美国领事馆而得名。1987 年填海扩建成现在的海滨公园。",
+"pts": [
+"白色的「BE KOBE」大字雕塑，神户最有名的拍照点",
+"神户港震灾纪念公园：原样保留了 1995 年地震中崩坏的码头",
+"白色帆船造型屋顶的神户海洋博物馆"
+],
+"tip": ""
+},
+"porttower": {
+"name": "神户港塔",
+"jp": "神戸ポートタワー",
+"tag": "神户地标",
+"intro": "1963 年落成，高 108m，红色的鼓形钢架被称为「钢铁美人」。2024 年大规模翻新后重开，新增了露天的屋顶甲板。",
+"pts": [
+"展望层 360° 俯瞰神户港和六甲山",
+"屋顶甲板（含在 ¥1,200 的票里）是没有玻璃的露天观景台",
+"晚上塔身会点灯"
+],
+"tip": "日期时间指定票，可以提前在官网买。"
+},
+"tenjuan": {
+"name": "天授庵",
+"jp": "天授庵",
+"tag": "南禅寺塔头",
+"intro": "1340 年由南禅寺第 15 世虎关师炼建立，是南禅寺开山祖师无关普门（大明国师）的塔所。几经火灾，1602 年由战国武将细川幽斋作为细川家的菩提寺重建。",
+"pts": [
+"本堂前的枯山水：白砂镶着苔边，菱形石板排成直线，据说是小堀远州的构思",
+"书院南侧的池泉回游式庭园：池边杉树和枫树环绕",
+"只有两座庭园，不大，适合坐着慢慢看"
+],
+"tip": ""
+},
+"nanzenji": {
+"name": "南禅寺",
+"jp": "南禅寺",
+"tag": "京都五山之上",
+"intro": "1291 年由龟山法皇创建，临济宗南禅寺派大本山。它被列在「京都五山」之上，是日本禅寺中地位最高的一座。",
+"pts": [
+"<b>三门</b>（1628 年藤堂高虎重建，高约 22m）：可以登楼，歌舞伎里石川五右卫门就是在这里大喊「绝景哉！」",
+"<b>方丈庭园</b>「虎之子渡」：江户初期的枯山水名园，传为小堀远州所作",
+"<b>水路阁</b>：红砖拱桥水渠，就在寺内（另有介绍）"
+],
+"tip": "三门 ¥600、方丈庭园 ¥600，分开买票。"
+},
+"suirokaku": {
+"name": "水路阁",
+"jp": "水路閣",
+"tag": "近代化遗产",
+"intro": "1890 年完成的琵琶湖疏水分线水渠，用红砖和花岗岩砌成拱桥，从南禅寺境内穿过。建成时颇有争议，如今和古寺融为一体，成了南禅寺最上镜的角落。",
+"pts": [
+"桥上至今还在流水",
+"免费，不在收费区"
+],
+"tip": ""
+},
+"eikando": {
+"name": "永观堂（禅林寺）",
+"jp": "永観堂（禅林寺）",
+"tag": "「红叶的永观堂」",
+"intro": "正式名称禅林寺，853 年创建，净土宗西山禅林寺派总本山。因 11 世纪的高僧永观而俗称「永观堂」。",
+"pts": [
+"<b>回首阿弥陀</b>：传说 1082 年永观念佛绕行时，阿弥陀佛回头对他说「永观，太慢了」，佛像至今保持回头的姿态",
+"卧龙廊：顺着山势盘旋而上的木回廊",
+"秋天约 3,000 株枫树；九月是绿枫，人少"
+],
+"tip": "16:00 停止受理。"
+},
+"tetsugaku": {
+"name": "哲学之道",
+"jp": "哲学の道",
+"tag": "散步道",
+"intro": "沿琵琶湖疏水分线、从若王子一带走到银阁寺的小路，约 1.5–2km。京都大学哲学家西田几多郎常在这里边走边思考，因此得名。",
+"pts": [
+"两岸种满樱花树，九月是一路绿荫",
+"沿途有法然院等小寺和小咖啡店",
+"北端出口就是银阁寺参道"
+],
+"tip": ""
+},
+"ginkakuji": {
+"name": "银阁寺（慈照寺）",
+"jp": "銀閣寺（慈照寺）",
+"tag": "世界遗产 · 国宝",
+"intro": "室町幕府第 8 代将军足利义政 1482 年起营建的东山山庄，死后改为禅寺。与金阁寺相对，代表简素幽寂的「东山文化」。「银阁」其实从来没有贴过银。",
+"pts": [
+"观音殿（银阁）：两层楼阁，国宝",
+"银沙滩与向月台：用白砂堆出的波纹和圆锥台",
+"绕后山的步道可以俯瞰整座寺院和京都市区"
+],
+"tip": "2026 年 4 月起门票 ¥1,000。"
+},
+"shimogamo": {
+"name": "下鸭神社・糺之森",
+"jp": "下鴨神社・糺の森",
+"tag": "世界遗产",
+"intro": "正式名称贺茂御祖神社，京都最古老的神社之一。参道两旁的「糺之森」是在市中心保留下来的原生林。",
+"pts": [
+"黄昏时林间的光影",
+"河合神社：祈求美丽的神社，有镜子形状的绘马",
+"相生社：两棵树长在一起的「连理贤木」"
+],
+"tip": "行程里是备选，看时间和体力。"
+},
+"byodoin": {
+"name": "平等院",
+"jp": "平等院",
+"tag": "世界遗产 · 国宝",
+"intro": "1052 年关白藤原赖通把父亲藤原道长的别墅改为寺院，第二年建成凤凰堂。凤凰堂是 10 日元硬币上的图案，屋顶上的金铜凤凰印在旧版 1 万日元纸币背面。",
+"pts": [
+"凤凰堂倒映在阿字池里，从对岸看最完整",
+"<b>凤翔馆</b>（博物馆）：凤凰原件、梵钟，以及 52 尊「云中供养菩萨」中的一部分"
+],
+"tip": "这次只看庭园和凤翔馆（¥700），不进凤凰堂内部。"
+},
+"ujigami": {
+"name": "宇治上神社",
+"jp": "宇治上神社",
+"tag": "世界遗产 · 国宝",
+"intro": "本殿建于平安时代后期，是日本现存最古老的神社建筑；拜殿是镰仓时代的寝殿造风格。1994 年随「古都京都文化财」列入世界遗产。",
+"pts": [
+"拜殿前两座圆锥形的「清砂」",
+"桐原水：宇治七名水中唯一还在的一处"
+],
+"tip": "免费。"
+},
+"ujijinja": {
+"name": "宇治神社",
+"jp": "宇治神社",
+"tag": "神社",
+"intro": "供奉应神天皇的皇子菟道稚郎子，从前与宇治上神社是一体的。",
+"pts": [
+"「见返兔」：传说皇子迷路时，一只兔子回头为他引路，护身符和手水舍都是兔子造型"
+],
+"tip": "免费。"
+},
+"tonoshima": {
+"name": "塔之岛・朝雾桥",
+"jp": "塔の島・朝霧橋",
+"tag": "宇治川",
+"intro": "宇治川中的小岛。岛上的十三重石塔高约 15m，建于镰仓时代（1286 年），是日本现存最大的石塔。朱红色的朝雾桥连着中岛和东岸（宇治上神社一侧）。",
+"pts": [
+"朝雾桥头有《源氏物语》宇治十帖的人物雕像",
+"沿河边走很舒服"
+],
+"tip": ""
+},
+"nintendo": {
+"name": "任天堂博物馆",
+"jp": "ニンテンドーミュージアム",
+"tag": "2024 年开馆",
+"intro": "2024 年 10 月开馆，由任天堂的宇治小仓工场改建而成，这里当年生产花札和扑克牌，后来是维修中心。",
+"pts": [
+"2 楼展厅：从花札、玩具到 FC、Game Boy、Switch 的历代产品",
+"1 楼互动区：用馆内发的 IC 币玩巨型手柄等体验",
+"商店有博物馆限定商品"
+],
+"tip": "QR 码入馆；在决定去不去之前别点「显示 QR 码」，点了就不能取消。"
+},
+"kifune": {
+"name": "贵船神社",
+"jp": "貴船神社",
+"tag": "水神总本宫",
+"intro": "日本全国约 450 座贵船神社的总本宫，供奉水神高龗神，自古是求雨、止雨的神社。",
+"pts": [
+"本宫：朱红春日灯笼夹着的石阶，是京都最有名的参道之一",
+"<b>水占卜</b>：把签纸浮在神水上，文字才会显现（授与所 9:00 开，7 点多买不到）",
+"结社：和泉式部曾在这里祈求丈夫回心转意，灵验而成为结缘神社",
+"奥宫：神社的起源地，传说玉依姬乘黄色的船溯流而上，船被石头围起来成了「船形石」"
+],
+"tip": "早上 7 点多基本没人，拍石阶灯笼最好。"
+},
+"sanzenin": {
+"name": "三千院",
+"jp": "三千院",
+"tag": "天台宗门迹寺院",
+"intro": "起源可以追溯到最澄在比叡山结的草庵，历代由皇族出家主持（门迹寺院），明治初年迁到大原。",
+"pts": [
+"<b>往生极乐院</b>：平安时代的佛堂，堂内阿弥陀三尊是国宝",
+"<b>有清园</b>：满地青苔和杉树，苔中藏着几尊小小的「童地藏」",
+"<b>聚碧园</b>：江户时代茶人金森宗和修整的池泉庭园，在客殿边喝抹茶边看最舒服"
+],
+"tip": "客殿抹茶 ¥500，9 点刚开门时最安静。"
+},
+"rurikoin": {
+"name": "瑠璃光院",
+"jp": "瑠璃光院",
+"tag": "特别拜观限定",
+"intro": "本是明治时代的别墅（三条实美命名为「喜鹤亭」），昭和初年由京都数寄屋名匠中村外二大改建，庭园传为佐野藤右卫门一派所作。后来做过料理旅馆，2005 年由岐阜的净土真宗光明寺买下，成为瑠璃光院。",
+"pts": [
+"书院二楼：窗外的枫叶倒映在漆黑的书桌上",
+"瑠璃之庭：苔上流水，名字来自苔的琉璃色光泽",
+"只在春、夏、秋特别拜观期间开放，平时进不去"
+],
+"tip": "只收现金 ¥2,000；10/1 是秋季开放首日，免预约。"
+},
+"otagi": {
+"name": "爱宕念佛寺",
+"jp": "愛宕念仏寺",
+"tag": "千二百罗汉",
+"intro": "766 年由称德天皇在京都东山创建，屡遭天灾而衰败，1922 年迁到嵯峨鸟居本。1955 年佛像雕刻家西村公朝出任住持，主持了复兴。",
+"pts": [
+"<b>1,200 尊石罗汉</b>：1981 年起花了约十年，由一般参拜者亲手雕刻奉纳，每一尊表情都不一样",
+"罗汉身上长满青苔，很有味道"
+],
+"tip": "周三、周六休；受理到 16:15。"
+},
+"toriimoto": {
+"name": "嵯峨鸟居本",
+"jp": "嵯峨鳥居本",
+"tag": "传统建筑保存地区",
+"intro": "爱宕山爱宕神社的门前町，江户时代参拜者络绎不绝。茅草顶民家和町家沿坡道排开，1979 年被指定为国家「重要传统建筑群保存地区」。",
+"pts": [
+"坡道上段是茅草屋顶的农家，下段是町家",
+"入口一之鸟居旁有 400 多年历史的香鱼料理老店平野屋",
+"下坡途中经过化野念佛寺（约 8,000 尊石佛和石塔）"
+],
+"tip": ""
+},
+"giouji": {
+"name": "祇王寺",
+"jp": "祇王寺",
+"tag": "平家物语",
+"intro": "名字来自《平家物语》里的白拍子（舞女）祇王。她深受平清盛宠爱，后来被新人佛御前取代，21 岁时与母亲、妹妹一起在这里出家；后来佛御前也看破世情，前来同修。",
+"pts": [
+"满园青苔和枫树，是嵯峨野最安静的苔庭之一",
+"草庵里的圆窗「吉野窗」，光透过格子投出彩虹一样的影子，又叫「虹之窗」",
+"本堂里有平清盛、祇王、祇女、母亲刀自和佛御前的木像"
+],
+"tip": "坐着看苔庭发呆的地方。"
+},
+"jojakkoji": {
+"name": "常寂光寺",
+"jp": "常寂光寺",
+"tag": "小仓山",
+"intro": "1596 年由日莲宗本圀寺第 16 世日禛在小仓山麓隐居时创建，土地由角仓家捐赠。寺名取自佛教里的理想净土「常寂光土」。",
+"pts": [
+"<b>多宝塔</b>（约 1620 年，重要文化财）：高约 12m，桧皮屋顶",
+"茅草顶的仁王门",
+"爬到高处能远眺嵯峨野和京都市区；境内有藤原定家小仓山庄「时雨亭」旧址的石碑"
+],
+"tip": "16:30 停止受理。"
+},
+"chikurin": {
+"name": "竹林小径",
+"jp": "竹林の小径",
+"tag": "岚山地标",
+"intro": "从野宫神社一带延伸约 400m 的竹林步道。高耸的竹子遮住天空，风一吹沙沙作响，「嵯峨野的竹林」被选入「日本音风景百选」。",
+"pts": [
+"白天游客最多，傍晚会少一些",
+"走到头就是天龙寺北门"
+],
+"tip": "全天开放、免费。"
+},
+"nonomiya": {
+"name": "野宫神社",
+"jp": "野宮神社",
+"tag": "源氏物语",
+"intro": "古代被选派到伊势神宫侍奉的皇女「斋王」，出发前要在这里斋戒净身。《源氏物语・贤木》里光源氏探望六条御息所的场景就在这里。",
+"pts": [
+"用没剥皮的原木做的「黑木鸟居」，被认为是最古老的鸟居形式",
+"以结缘闻名",
+"竹林小径就在神社旁边"
+],
+"tip": ""
+},
+"togetsukyo": {
+"name": "渡月桥",
+"jp": "渡月橋",
+"tag": "岚山地标",
+"intro": "横跨桂川（大堰川）、长约 155m 的桥。镰仓时代龟山上皇看到月亮仿佛在桥上渡过，因此得名。现在的桥是 1934 年重建的。",
+"pts": [
+"背后就是岚山",
+"桥上和河岸是看日落的好位置（10/1 日落 17:42）"
+],
+"tip": ""
+},
+"tenryuji": {
+"name": "天龙寺",
+"jp": "天龍寺",
+"tag": "世界遗产 · 京都五山第一",
+"intro": "1339 年足利尊氏为悼念后醍醐天皇而建，开山是梦窗疏石，在京都五山中排名第一。",
+"pts": [
+"<b>曹源池庭园</b>：梦窗疏石作庭，日本第一个被指定为「史迹・特别名胜」的庭园，以岚山为借景",
+"大方丈廊下正对曹源池，是坐着发呆的最佳位置（诸堂另付 ¥300，16:30 停止受理）",
+"法堂天井的「云龙图」（加山又造作，只在周末和特定期间公开）"
+],
+"tip": "看情况加：庭园 16:50 停止受理。"
+},
+"kinkakuji": {
+"name": "金阁寺（鹿苑寺）",
+"jp": "金閣寺（鹿苑寺）",
+"tag": "世界遗产",
+"intro": "1397 年足利义满营建的北山山庄，死后改为禅寺。舍利殿外层贴满金箔，是「北山文化」的代表。1950 年被见习僧人纵火烧毁（三岛由纪夫小说《金阁寺》的题材），1955 年重建。",
+"pts": [
+"镜湖池对岸是拍倒影的经典位置",
+"出口前的不动釜茶所：抹茶配金箔落雁 ¥500",
+"参观路线是单向的，约 45 分钟"
+],
+"tip": "看情况加：9:00–17:00，¥500。"
+}
+};
+(function(){
+  var d = document.getElementById('spotDlg');
+  function open(key){
+    var s = SPOTS[key]; if(!s) return;
+    d.querySelector('.dlg-jp').textContent = s.jp;
+    d.querySelector('h3').innerHTML = s.name + (s.tag ? '<span class="dlg-tag">' + s.tag + '</span>' : '');
+    d.querySelector('.dlg-intro').textContent = s.intro;
+    d.querySelector('.dlg-pts').innerHTML = (s.pts || []).map(function(p){ return '<li>' + p + '</li>'; }).join('');
+    var tip = d.querySelector('.dlg-tip'); tip.textContent = s.tip || ''; tip.hidden = !s.tip;
+    if (typeof d.showModal === 'function') d.showModal(); else d.setAttribute('open', '');
+  }
+  function close(){ if (typeof d.close === 'function') d.close(); else d.removeAttribute('open'); }
+  document.addEventListener('click', function(e){
+    var t = e.target.closest ? e.target.closest('.spot') : null;
+    if (t) { e.preventDefault(); open(t.dataset.spot); }
+  });
+  document.addEventListener('keydown', function(e){
+    var t = e.target;
+    if (t && t.classList && t.classList.contains('spot') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); open(t.dataset.spot); }
+  });
+  d.querySelector('.dlg-x').addEventListener('click', close);
+  d.addEventListener('click', function(e){ if (e.target === d) close(); });
+})();
+</script>
+<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('./sw.js');});}</script>
+</body>
+</html>
