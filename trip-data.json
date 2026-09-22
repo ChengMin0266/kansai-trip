@@ -933,9 +933,7 @@
       "noNavigationTypes": [
         "flight",
         "note",
-        "rest"
-      ],
-      "selfNavigationTypes": [
+        "rest",
         "drive",
         "return",
         "transfer",
@@ -945,7 +943,8 @@
         "attraction",
         "walk",
         "hike"
-      ]
+      ],
+      "selfNavigationTypes": []
     },
     "navigationPlaces": []
   },

@@ -464,10 +464,12 @@ const SPOTS = {
   function showPoi(key) {
     var s = SPOTS[key]; if (!s) return;
     var dlg = ensureDialog();
+    var q = encodeURIComponent(s.jp || s.name);
     $("#poi-body").innerHTML = '<p class="poi-tag">' + (s.jp || "") + (s.tag ? " · " + s.tag : "") + "</p>" +
       "<h3>" + s.name + "</h3><p class='poi-intro'>" + s.intro + "</p>" +
       "<ul>" + (s.pts || []).map(function (p) { return "<li>" + p + "</li>"; }).join("") + "</ul>" +
-      (s.tip ? "<p class='poi-tip'>💡 " + s.tip + "</p>" : "");
+      (s.tip ? "<p class='poi-tip'>💡 " + s.tip + "</p>" : "") +
+      '<a class="poi-map" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&query=' + q + '">📍 在 Google Maps 打开 ↗</a>';
     dlg.showModal();
   }
   document.addEventListener("click", function (e) {
