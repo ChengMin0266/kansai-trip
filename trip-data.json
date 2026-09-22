@@ -1,0 +1,1687 @@
+{
+  "$schema": "./schemas/trip-data.schema.json",
+  "schemaVersion": "2.0-lite",
+  "config": {
+    "schemaVersion": "1.0.0",
+    "modules": {
+      "flights": true,
+      "overview": true,
+      "itinerary": true,
+      "todo": true,
+      "driving": false,
+      "ledger": true
+    },
+    "language": "zh-CN",
+    "persistence": {
+      "mode": "local"
+    }
+  },
+  "metadata": {
+    "tripId": "kansai-2026-09",
+    "title": "关西七日行程",
+    "language": "zh-CN",
+    "assets": {
+      "routeMaps": [
+        "assets/maps/templates/template-03-coastal.webp"
+      ]
+    }
+  },
+  "trip": {
+    "status": "draft",
+    "startDate": "2026-09-26",
+    "endDate": "2026-10-02",
+    "dayCount": 7,
+    "nightCountAway": 6,
+    "countries": [
+      {
+        "code": "JP",
+        "name": "Japan",
+        "nameZh": "日本"
+      }
+    ],
+    "primaryDestinationCountries": [
+      "JP"
+    ],
+    "citiesAndAreas": [
+      "神户",
+      "姬路",
+      "京都",
+      "宇治",
+      "大原",
+      "贵船",
+      "岚山"
+    ],
+    "routeSummary": "神户 2 晚 · 姬路 — 京都洛北 4 晚 · 大原 / 八瀬 / 贵船 / 岚山",
+    "groupSize": 2
+  },
+  "flightJourneys": [
+    {
+      "id": "j-outbound",
+      "title": "去程 · 伦敦 → 大阪（北京中转）"
+    },
+    {
+      "id": "j-return",
+      "title": "回程 · 大阪 → 成都（北京中转）",
+      "placeholder": true,
+      "status": "pending",
+      "missingFields": [
+        "flightNumber",
+        "departureTime",
+        "arrivalAirport"
+      ],
+      "note": "四次航变暂定、待国航出票：10/2 14:00 过 KIX→PEK（约 17:15 到 T3），傍晚 PEK→成都，当晚 ~22:00 落地（双流/天府待票面）；行李是否直挂待确认。"
+    },
+    {
+      "id": "j-uk",
+      "title": "返英 · 成都 → 伦敦"
+    }
+  ],
+  "flights": [
+    {
+      "id": "f-ca852",
+      "journeyId": "j-outbound",
+      "sequence": 1,
+      "airline": {
+        "nameZh": "中国国际航空"
+      },
+      "flightNumber": "CA852",
+      "aircraft": "A350-900",
+      "departure": {
+        "airportCode": "LGW",
+        "city": "伦敦",
+        "date": "2026-09-25",
+        "time": "12:35",
+        "utcOffset": "+01:00",
+        "terminal": "北楼 North"
+      },
+      "arrival": {
+        "airportCode": "PEK",
+        "city": "北京",
+        "date": "2026-09-26",
+        "time": "05:45",
+        "utcOffset": "+08:00",
+        "terminal": "T3"
+      },
+      "note": "中转 3h，寄快递；国航国际值机 T3C 四层，国际出发走 T3E（楼内小火车）"
+    },
+    {
+      "id": "f-ca927",
+      "journeyId": "j-outbound",
+      "sequence": 2,
+      "airline": {
+        "nameZh": "中国国际航空"
+      },
+      "flightNumber": "CA927",
+      "departure": {
+        "airportCode": "PEK",
+        "city": "北京",
+        "date": "2026-09-26",
+        "time": "08:45",
+        "utcOffset": "+08:00",
+        "terminal": "T3"
+      },
+      "arrival": {
+        "airportCode": "KIX",
+        "city": "大阪",
+        "date": "2026-09-26",
+        "time": "12:40",
+        "utcOffset": "+09:00",
+        "terminal": "T1"
+      }
+    },
+    {
+      "id": "f-ca423",
+      "journeyId": "j-uk",
+      "sequence": 1,
+      "airline": {
+        "nameZh": "中国国际航空"
+      },
+      "flightNumber": "CA423",
+      "aircraft": "A350-900",
+      "departure": {
+        "airportCode": "TFU",
+        "city": "成都",
+        "date": "2026-10-10",
+        "time": "15:55",
+        "utcOffset": "+08:00",
+        "terminal": "T1"
+      },
+      "arrival": {
+        "airportCode": "LHR",
+        "city": "伦敦",
+        "date": "2026-10-10",
+        "time": "20:15",
+        "utcOffset": "+01:00",
+        "terminal": "T2"
+      }
+    }
+  ],
+  "accommodations": [
+    {
+      "id": "h-kobe",
+      "name": "Comfort Hotel ERA 神户三宫",
+      "checkIn": "2026-09-26",
+      "checkOut": "2026-09-28",
+      "nights": 2,
+      "area": "云井通（ミント神戸旁，JR 东口 5 分、阪神 A23 口 4 分）",
+      "note": "约 £160，双床，含免费早餐",
+      "status": "已订"
+    },
+    {
+      "id": "h-kyoto",
+      "name": "Via Inn Prime 京都站八条口",
+      "checkIn": "2026-09-28",
+      "checkOut": "2026-10-02",
+      "nights": 4,
+      "area": "京都站八条口步行 2–3 分钟（JR 西日本直营）",
+      "note": "约 £230，带大浴场",
+      "status": "已订"
+    }
+  ],
+  "groundTransport": {
+    "rentalCar": null,
+    "rentalChecklist": [],
+    "drivingNotes": [],
+    "drivingReferenceLinks": [],
+    "plannedRoadLegs": [],
+    "publicTransitAndRail": []
+  },
+  "days": [
+    {
+      "day": 1,
+      "date": "2026-09-26",
+      "title": "中午到 → 美术馆 → 三宫晚饭",
+      "locations": [
+        "关西机场",
+        "神户三宫"
+      ],
+      "schedule": [
+        {
+          "id": "d1-1",
+          "time": "12:40",
+          "type": "flight",
+          "text": "落地关西机场 KIX T1"
+        },
+        {
+          "id": "d1-2",
+          "time": "~14:15",
+          "type": "note",
+          "text": "出关取行李（按 1–1.5h），到 T1 一楼巴士站"
+        },
+        {
+          "id": "d1-3",
+          "time": "14:30",
+          "type": "transfer",
+          "text": "机场大巴去神户三宫（可刷西瓜卡/ICOCA）：KIX T1 一楼 6 号站台 → ミント神戸，约 65 分钟，¥2,200/人（备选 Bay Shuttle 船约 ¥840，倒手 5 次，行李多不推荐）"
+        },
+        {
+          "id": "d1-4",
+          "time": "16:00",
+          "type": "check-in",
+          "text": "ミント神戸下车步行 2–3 分钟到 Comfort Hotel ERA 神户三宫，扔行李"
+        },
+        {
+          "id": "d1-5",
+          "time": "16:45",
+          "type": "attraction",
+          "text": "兵库县立美术馆（安藤忠雄「艺术之馆」）：最后入馆 17:30、18:00 闭馆。9/26 无收费展（换展空窗 9/24–10/9），免费 Ando Gallery + 建筑本身（青苹果/海之甲板/螺旋楼梯）；看体力临场定，太累就跳过。阪神「神戸三宮」→「岩屋」2 站，步行 8 分钟",
+          "placeId": "p-sannomiya"
+        },
+        {
+          "id": "d1-6",
+          "time": "18:15",
+          "type": "restaurant",
+          "text": "回三宫，南京町一带溜达、晚餐随意（落地第一天不折腾）"
+        },
+        {
+          "id": "d1-7",
+          "time": "",
+          "type": "note",
+          "text": "航班晚点赶不上最后入馆：美术馆周日也开，退路 D2 补；周一（D3）闭馆不能挪"
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "date": "2026-09-27",
+      "title": "姬路 → 舞子夕阳 → Tajimaya",
+      "locations": [
+        "姬路",
+        "舞子",
+        "三宫"
+      ],
+      "schedule": [
+        {
+          "id": "d2-1",
+          "time": "~08:10",
+          "type": "transfer",
+          "text": "JR 新快速去姬路（约每 15 分钟一班，车程约 40 分钟，班次以当天 App 为准）"
+        },
+        {
+          "id": "d2-2",
+          "time": "~08:50",
+          "type": "walk",
+          "text": "姬路站出站沿大手前通直走到城，约 1km、15–20 分钟"
+        },
+        {
+          "id": "d2-3",
+          "time": "~09:15",
+          "type": "attraction",
+          "text": "姬路城（9:00 开门，周日人多），买城＋好古园联票 ¥2,600（2026-03 起市外游客涨价）",
+          "placeId": "p-himeji",
+          "ticketIds": [
+            "t-himeji"
+          ]
+        },
+        {
+          "id": "d2-4",
+          "time": "11:00",
+          "type": "attraction",
+          "text": "好古园（江户风九庭园，借景天守，联票已含）逛到 11:45"
+        },
+        {
+          "id": "d2-5",
+          "time": "12:00",
+          "type": "restaurant",
+          "text": "午饭 Menme（めんめ）手打乌冬（站与城之间商店街，排队正常不用赶）"
+        },
+        {
+          "id": "d2-6",
+          "time": "14:00",
+          "type": "transfer",
+          "text": "JR「姫路」→（明石换乘）→「舞子」，约 40 分钟"
+        },
+        {
+          "id": "d2-7",
+          "time": "14:45",
+          "type": "attraction",
+          "text": "舞子公园：海上步道（桥内玻璃回廊，周日 ¥300，17:30 前先上）→ 孙文纪念馆·移情阁外观 → 桥下等夕阳，日落约 17:50",
+          "placeId": "p-maiko",
+          "ticketIds": [
+            "t-maiko"
+          ]
+        },
+        {
+          "id": "d2-8",
+          "time": "18:15",
+          "type": "transfer",
+          "text": "JR 快速回三宫（约 25 分钟），回酒店放松洗漱"
+        },
+        {
+          "id": "d2-9",
+          "time": "20:30",
+          "type": "restaurant",
+          "text": "晚餐：炭火烧肉 Tajimaya（但馬屋）已订（三宫市内）"
+        },
+        {
+          "id": "d2-10",
+          "time": "",
+          "type": "note",
+          "text": "雨天 Plan B（定稿）：下雨就砍舞子（海上步道在桥体内，小雨真想走也能走）。姬路午饭后：9/26 没去成美术馆 → 补兵库县立美术馆（周日开 10:00–18:00）；已去过 → 临场二选一：回三宫逛街（中心街/大丸/元町高架下有顶棚），或有马温泉（三宫经谷上换神户电铁约 35–40 分钟；金の湯 ¥800 自带毛巾 / 太閤の湯 周末约 ¥3,000 含毛巾馆内服，都免预约、不用泳衣）。20:30 Tajimaya 不变"
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "date": "2026-09-28",
+      "title": "神户收尾 → 午后去京都",
+      "locations": [
+        "神户港",
+        "京都"
+      ],
+      "schedule": [
+        {
+          "id": "d3-1",
+          "time": "08:00",
+          "type": "check-out",
+          "text": "退房，行李寄存 Comfort ERA 前台，轻装出门"
+        },
+        {
+          "id": "d3-2",
+          "time": "08:15",
+          "type": "restaurant",
+          "text": "rond sucre cafe（8:00 开门，人气店早到免排队/售罄；10 点前进店最稳）"
+        },
+        {
+          "id": "d3-3",
+          "time": "09:30",
+          "type": "attraction",
+          "text": "美利坚公园：港塔展望台（9:00 开；展望层 ¥1,000，含屋顶露台 ¥1,200，日期时间指定票）",
+          "placeId": "p-kobeport",
+          "ticketIds": [
+            "t-porttower"
+          ]
+        },
+        {
+          "id": "d3-4",
+          "time": "12:30",
+          "type": "restaurant",
+          "text": "神户午饭（南京町补漏或三宫），回 Comfort ERA 取行李"
+        },
+        {
+          "id": "d3-5",
+          "time": "14:00",
+          "type": "transfer",
+          "text": "JR 新快速「三ノ宮」→「京都」，约 55 分钟直达"
+        },
+        {
+          "id": "d3-6",
+          "time": "15:30",
+          "type": "check-in",
+          "text": "京都站八条口出站步行 2–3 分钟入住 Via Inn Prime，放好行李"
+        },
+        {
+          "id": "d3-7",
+          "time": "16:00",
+          "type": "attraction",
+          "text": "四条河原町购物：药妆店最密（松本清/大国药妆/唐吉诃德/新京极·寺町商店街），逛到 18:00，就近走去露庵"
+        },
+        {
+          "id": "d3-8",
+          "time": "18:30",
+          "type": "restaurant",
+          "text": "晚餐：露庵 菊乃井（米其林二星，木屋町通四条下ル）晚怀石，已付款确认。dress code smart casual；已电话确认：非凉鞋（德训/休闲鞋 OK）+ 纯色正式点的袜子（不光脚上榻榻米）"
+        },
+        {
+          "id": "d3-9",
+          "time": "晚",
+          "type": "rest",
+          "text": "回八条口泡 Via Inn 大浴场解乏"
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "date": "2026-09-29",
+      "title": "天授庵 · 南禅寺 · 永观堂 · 哲学之道 · 银阁寺",
+      "locations": [
+        "南禅寺一线",
+        "银阁寺"
+      ],
+      "schedule": [
+        {
+          "id": "d4-1",
+          "time": "09:00",
+          "type": "transfer",
+          "text": "地铁乌丸线「京都」→「乌丸御池」换东西线 →「蹴上」，约 15 分钟"
+        },
+        {
+          "id": "d4-2",
+          "time": "09:15",
+          "type": "attraction",
+          "text": "蹴上出站穿「ねじりまんぽ」砖隧道进南禅寺地界；天授庵（枯山水+池泉两庭，¥500，约 40 分钟）",
+          "placeId": "p-nanzenji"
+        },
+        {
+          "id": "d4-3",
+          "time": "10:15",
+          "type": "attraction",
+          "text": "南禅寺：三门登楼（¥600）、方丈庭园（¥600，约 30 分钟）、红砖水路阁（免费）"
+        },
+        {
+          "id": "d4-4",
+          "time": "11:30",
+          "type": "attraction",
+          "text": "永观堂（回首阿弥陀，¥600；九月绿枫人少）"
+        },
+        {
+          "id": "d4-5",
+          "time": "12:45",
+          "type": "restaurant",
+          "text": "午饭（永观堂/哲学之道南端简单吃）"
+        },
+        {
+          "id": "d4-6",
+          "time": "13:30",
+          "type": "walk",
+          "text": "哲学之道 2km 缓走 30–45 分钟 → 银阁寺（¥1,000，2026-04 起涨价），逛 1 小时",
+          "placeId": "p-ginkakuji"
+        },
+        {
+          "id": "d4-7",
+          "time": "15:30",
+          "type": "transfer",
+          "text": "银阁寺道坐巴士在四条河原町下车：补逛药妆 + 傍晚吃晚饭，逛好地铁回八条口"
+        },
+        {
+          "id": "d4-8",
+          "time": "",
+          "type": "note",
+          "text": "门票合计 ¥3,300；或先去出町柳顺访下鸭神社·糺之森（黄昏）再回四条河原町"
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "date": "2026-09-30",
+      "title": "宇治闲逛 · 任天堂博物馆 15:00 场",
+      "locations": [
+        "宇治",
+        "小仓"
+      ],
+      "schedule": [
+        {
+          "id": "d5-1",
+          "time": "09:40",
+          "type": "transfer",
+          "text": "JR 奈良线快速「京都」→「宇治」直达（约 17 分钟，西岸下车）"
+        },
+        {
+          "id": "d5-2",
+          "time": "10:00",
+          "type": "attraction",
+          "text": "平等院（庭园+凤翔馆 ¥700，不进凤凰堂内部）→ 过桥东岸宇治上神社（世界遗产，免费）、宇治神社、朝雾桥、塔之岛",
+          "placeId": "p-uji"
+        },
+        {
+          "id": "d5-3",
+          "time": "12:00",
+          "type": "restaurant",
+          "text": "表参道午饭 + 抹茶甜品（中村藤吉/通圆/伊藤久右卫门，12 点前进店避排队），下午河边溜达"
+        },
+        {
+          "id": "d5-4",
+          "time": "14:00",
+          "type": "walk",
+          "text": "步行去博物馆：平等院一带约 2.4km 平路 30 分钟直达（雨/累则 JR「宇治」→「小仓」1 站再走 8 分钟）"
+        },
+        {
+          "id": "d5-5",
+          "time": "15:00",
+          "type": "attraction",
+          "text": "任天堂博物馆：入场窗口 15:00–15:30（¥3,300/人 已购），玩到 18:00 闭馆。QR 入馆，互动区用馆内 IC 币",
+          "placeId": "p-nintendo",
+          "ticketIds": [
+            "t-nintendo"
+          ]
+        },
+        {
+          "id": "d5-6",
+          "time": "18:15",
+          "type": "transfer",
+          "text": "JR「小倉」→「京都」约 25 分钟，出站即到家；晚饭站内 Porta/拉面小路"
+        },
+        {
+          "id": "d5-7",
+          "time": "",
+          "type": "note",
+          "text": "今晚早点休息——明天 06:30 包车出发。回京都站时在八条口志津屋买好明天车上吃的面包（营业到 22:00；招牌カルネ夹火腿）"
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "date": "2026-10-01",
+      "title": "包车：贵船 → 三千院 → 瑠璃光院 → 岚山（核心日）",
+      "locations": [
+        "贵船",
+        "大原",
+        "八瀬",
+        "岚山"
+      ],
+      "schedule": [
+        {
+          "id": "d6-0",
+          "time": "",
+          "type": "note",
+          "text": "瑠璃光院秋季拝观今天开门，此日锁死。包车 6:30 酒店接、岚山（爱宕念佛寺）结束；报价 10 小时 ¥1,850 人民币（含停车、过路费）已确认，实际约用 7 小时。全程不走回头路"
+        },
+        {
+          "id": "d6-1",
+          "time": "06:30",
+          "type": "transfer",
+          "text": "Via Inn 八条口门口上车（面包前一晚买好）；京都站 → 贵船约 40 分钟"
+        },
+        {
+          "id": "d6-2",
+          "time": "07:10",
+          "type": "attraction",
+          "text": "贵船神社 1 小时：本宫（朱红灯笼石阶，清晨没人）→ 结社 → 奥宫，车在奥宫接。免费；授与所 9:00 开，水占卜此时买不到",
+          "placeId": "p-kibune"
+        },
+        {
+          "id": "d6-3",
+          "time": "08:10",
+          "type": "transfer",
+          "text": "车去大原（约 20–25 分钟），下车走参道上去 10 分钟"
+        },
+        {
+          "id": "d6-4",
+          "time": "09:00",
+          "type": "attraction",
+          "text": "三千院 2 小时：先在客殿喝抹茶看聚碧园（¥500）→ 宸殿 → 有清园苔庭 → 往生极乐院。9:00–17:00 · ¥700",
+          "placeId": "p-ohara"
+        },
+        {
+          "id": "d6-5",
+          "time": "11:10",
+          "type": "transfer",
+          "text": "下山上车 → 八瀬駅前下车（特别拜观期间车开不到寺门口）→ 步行 7 分钟"
+        },
+        {
+          "id": "d6-6",
+          "time": "11:30",
+          "type": "attraction",
+          "text": "瑠璃光院 30 分钟：书院二楼漆桌倒影。10:00–17:00、16:30 停止受理 · ¥2,000 现金 · 10/1 秋季首日免预约",
+          "placeId": "p-yase",
+          "ticketIds": [
+            "t-ruriko"
+          ]
+        },
+        {
+          "id": "d6-7",
+          "time": "",
+          "type": "note",
+          "text": "可选（时间不够就不去）金阁寺 45 分钟：加的话瑠璃光院出来先开去金阁寺（约 40 分钟），12:40–13:25 参观再去爱宕念佛寺；后面各站整体晚约 1 小时，日落前空档没了，天龙寺也来不及。9:00–17:00 · ¥500"
+        },
+        {
+          "id": "d6-8",
+          "time": "12:05",
+          "type": "transfer",
+          "text": "上车去爱宕念佛寺（八瀬 → 奥嵯峨约 17km、45 分钟），车上吃面包"
+        },
+        {
+          "id": "d6-9",
+          "time": "12:50",
+          "type": "attraction",
+          "text": "爱宕念佛寺：1,200 尊罗汉石像，约 50 分钟。受理 9:00–16:15（10/1 周四开）· ¥1,000。包车在这里结束",
+          "placeId": "p-arashiyama"
+        },
+        {
+          "id": "d6-10",
+          "time": "13:40",
+          "type": "walk",
+          "text": "沿嵯峨鸟居本老街下坡，约 25 分钟"
+        },
+        {
+          "id": "d6-11",
+          "time": "14:05",
+          "type": "attraction",
+          "text": "祇王寺 1 小时：苔庭，坐着发呆。9:00–16:50、16:30 停止受理 · ¥500"
+        },
+        {
+          "id": "d6-12",
+          "time": "15:15",
+          "type": "attraction",
+          "text": "常寂光寺：半山坡远眺嵯峨野，约 45 分钟。16:30 停止受理 · ¥600"
+        },
+        {
+          "id": "d6-13",
+          "time": "16:20",
+          "type": "attraction",
+          "text": "经野宫神社去竹林小径（全天开放 · 免费）"
+        },
+        {
+          "id": "d6-14",
+          "time": "",
+          "type": "note",
+          "text": "可选（时间不够就不去）天龙寺：竹林出来就是北门，约 16:40 进只能看庭园 20 分钟（16:50 停止受理 · ¥500）；前面加了金阁寺就不去"
+        },
+        {
+          "id": "d6-15",
+          "time": "16:45",
+          "type": "attraction",
+          "text": "渡月桥一带自由活动，17:42 日落"
+        },
+        {
+          "id": "d6-16",
+          "time": "18:00",
+          "type": "transfer",
+          "text": "回市区吃晚饭：JR「嵯峨嵐山」→「京都」约 15 分钟；去河原町坐阪急（桂换乘）约 30 分钟"
+        },
+        {
+          "id": "d6-17",
+          "time": "",
+          "type": "note",
+          "text": "机动：常寂光寺出来到日落前约 1 小时空档，瑠璃光院排队就从这里扣。包车订不成时有公交版备选（7:35 京都站前 C3 上 17 路，反向：大原→八瀬→贵船，出町柳收尾）"
+        }
+      ]
+    },
+    {
+      "day": 7,
+      "date": "2026-10-02",
+      "title": "离境 · Haruka 去机场（暂定 14:00 过起飞，当晚到家）",
+      "locations": [
+        "京都",
+        "关西机场"
+      ],
+      "schedule": [
+        {
+          "id": "d7-1",
+          "time": "~08:00",
+          "type": "note",
+          "text": "起床收拾，站内/八条口简单早餐（Porta 咖啡店 7:30 前后开），不排点"
+        },
+        {
+          "id": "d7-2",
+          "time": "09:00",
+          "type": "check-out",
+          "text": "退房取行李，走 2–3 分钟进站"
+        },
+        {
+          "id": "d7-3",
+          "time": "09:30",
+          "type": "transfer",
+          "text": "Haruka 特急（京都站 30 号月台，约每 30 分钟一班，80 分钟）→ 约 10:50 到 KIX T1，起飞前 3h+ 稳妥。兜底：最晚坐 10:00 前后的班次（11:20 到，起飞前约 2h40）"
+        },
+        {
+          "id": "d7-4",
+          "time": "11:00",
+          "type": "note",
+          "text": "值机托运（行李是否直挂到成都，出票后确认）、出境、免税店午饭"
+        },
+        {
+          "id": "d7-5",
+          "time": "14:00过",
+          "type": "flight",
+          "text": "起飞（暂定、航班号待出票）→ 约 17:15 到北京 T3"
+        },
+        {
+          "id": "d7-6",
+          "time": "傍晚",
+          "type": "transfer",
+          "text": "PEK T3 中转：入境边检 → 国内段再安检 → 登机（建议中转 ≥2h，出票后核对）"
+        },
+        {
+          "id": "d7-7",
+          "time": "~22:00",
+          "type": "flight",
+          "text": "落地成都（双流/天府待票面），自行打车回家"
+        }
+      ]
+    }
+  ],
+  "places": [
+    {
+      "id": "p-kix",
+      "nameZh": "关西机场",
+      "name": "KIX"
+    },
+    {
+      "id": "p-sannomiya",
+      "nameZh": "神户三宫",
+      "name": "Sannomiya"
+    },
+    {
+      "id": "p-himeji",
+      "nameZh": "姬路",
+      "name": "Himeji"
+    },
+    {
+      "id": "p-maiko",
+      "nameZh": "舞子",
+      "name": "Maiko"
+    },
+    {
+      "id": "p-kobeport",
+      "nameZh": "神户港",
+      "name": "Kobe Port"
+    },
+    {
+      "id": "p-kyotostn",
+      "nameZh": "京都站",
+      "name": "Kyoto Station"
+    },
+    {
+      "id": "p-nanzenji",
+      "nameZh": "南禅寺",
+      "name": "Nanzen-ji"
+    },
+    {
+      "id": "p-ginkakuji",
+      "nameZh": "银阁寺",
+      "name": "Ginkaku-ji"
+    },
+    {
+      "id": "p-uji",
+      "nameZh": "宇治",
+      "name": "Uji"
+    },
+    {
+      "id": "p-nintendo",
+      "nameZh": "任天堂博物馆",
+      "name": "Nintendo Museum"
+    },
+    {
+      "id": "p-ohara",
+      "nameZh": "大原",
+      "name": "Ohara"
+    },
+    {
+      "id": "p-yase",
+      "nameZh": "八瀬",
+      "name": "Yase"
+    },
+    {
+      "id": "p-kibune",
+      "nameZh": "贵船",
+      "name": "Kibune"
+    },
+    {
+      "id": "p-arashiyama",
+      "nameZh": "岚山",
+      "name": "Arashiyama"
+    }
+  ],
+  "restaurants": [
+    {
+      "id": "r-rozan",
+      "name": "露庵 菊乃井",
+      "day": 3,
+      "date": "2026-09-28",
+      "time": "18:30",
+      "note": "米其林二星晚怀石，已付款；smart casual、非凉鞋、带正式袜子"
+    },
+    {
+      "id": "r-tajimaya",
+      "name": "炭火烧肉 Tajimaya（但馬屋）",
+      "day": 2,
+      "date": "2026-09-27",
+      "time": "20:30",
+      "note": "已订"
+    },
+    {
+      "id": "r-menme",
+      "name": "Menme（めんめ）手打乌冬",
+      "day": 2,
+      "note": "姬路，站与城之间商店街"
+    },
+    {
+      "id": "r-rond",
+      "name": "rond sucre cafe",
+      "day": 3,
+      "note": "神户，8:00 开门人气店"
+    }
+  ],
+  "bookingsAndTickets": [],
+  "ticketPlanning": {
+    "statusStorage": "local",
+    "statusStorageNote": "门票状态默认只保存在当前浏览器。",
+    "items": [
+      {
+        "id": "t-nintendo",
+        "day": 5,
+        "name": "任天堂博物馆",
+        "requirement": "已购（15:00–15:30 入场，¥3,300/人，QR 入馆——决定去之前别点「显示 QR 码」，点了不能取消）"
+      },
+      {
+        "id": "t-himeji",
+        "day": 2,
+        "name": "姬路城＋好古园联票",
+        "requirement": "现场购买 ¥2,600/人（2026-03 起市外游客价）"
+      },
+      {
+        "id": "t-maiko",
+        "day": 2,
+        "name": "舞子海上步道",
+        "requirement": "现场购买，周日 ¥300"
+      },
+      {
+        "id": "t-porttower",
+        "day": 3,
+        "name": "神户港塔（含屋顶露台）",
+        "requirement": "¥1,200，日期时间指定票，可提前官网买"
+      },
+      {
+        "id": "t-ruriko",
+        "day": 6,
+        "name": "瑠璃光院秋季特别拝观",
+        "requirement": "现场 ¥2,000 只收现金；10/1 开幕首日免预约（需预约期 11/8–12/7 与我们无关）"
+      }
+    ]
+  },
+  "preTrip": {
+    "packingItems": [
+      {
+        "id": "todo-1",
+        "text": "国航改签出票确认（第一优先）：确认航班号/时刻/落地机场（双流还是天府）/行李是否直挂，核 PEK 中转时长 ≥2h",
+        "completed": false
+      },
+      {
+        "id": "todo-2",
+        "text": "拿到票面后核对签证行程单的到达机场",
+        "completed": false
+      },
+      {
+        "id": "todo-3",
+        "text": "确认西瓜卡（旧卡能否用/有无余额）；如无 → 手机 Apple Pay 加 Suica，出发前预充值",
+        "completed": false
+      },
+      {
+        "id": "todo-4",
+        "text": "出发前查关空→三宫机场大巴时刻（目标 14:30–15:00 班次）",
+        "completed": false
+      },
+      {
+        "id": "todo-5",
+        "text": "神户/京都酒店已全订（Comfort ERA ×2 + Via Inn Prime ×4）",
+        "completed": true
+      },
+      {
+        "id": "todo-6",
+        "text": "餐厅全定：露庵 9/28 已付款 · Tajimaya 9/27 已订 · 任天堂 9/30 已购票",
+        "completed": true
+      },
+      {
+        "id": "todo-7",
+        "text": "瑠璃光院已确认 10/1 免预约；D6 包车已确认",
+        "completed": true
+      },
+      {
+        "id": "todo-8",
+        "text": "兵库县立美术馆官网核实 9/26 开馆（无收费展，仅免费 Ando Gallery）",
+        "completed": true
+      }
+    ],
+    "preparationsExplicitlyMentioned": [],
+    "missingNote": ""
+  },
+  "mapLinks": {
+    "providedGoogleMapsLinks": [],
+    "note": "",
+    "cityLevelNavigationDisabled": false,
+    "navigationPolicy": {
+      "noNavigationTypes": [
+        "flight",
+        "note",
+        "rest"
+      ],
+      "selfNavigationTypes": [
+        "drive",
+        "return",
+        "transfer",
+        "check-in",
+        "check-out",
+        "restaurant",
+        "attraction",
+        "walk",
+        "hike"
+      ]
+    },
+    "navigationPlaces": []
+  },
+  "issuesAndUncertainties": [
+    {
+      "id": "iss-1",
+      "text": "回程航班四次航变后暂定（10/2 14:00 过 KIX→PEK→当晚 ~22:00 落成都），待国航出票；落地机场（双流/天府）与行李直挂待票面确认"
+    }
+  ],
+  "map": {
+    "schemaVersion": "1.0-lite",
+    "mapMode": "template-auto",
+    "templateId": "coastal-region",
+    "disclaimer": "本图仅表达地点的相对方位与路线顺序，不代表真实比例或精确地理边界。",
+    "places": [
+      {
+        "id": "p-kix",
+        "nameZh": "关西机场",
+        "geo": {
+          "lat": 34.4342,
+          "lng": 135.2328
+        },
+        "countryCode": "JP"
+      },
+      {
+        "id": "p-sannomiya",
+        "nameZh": "神户三宫",
+        "geo": {
+          "lat": 34.6948,
+          "lng": 135.1955
+        },
+        "countryCode": "JP"
+      },
+      {
+        "id": "p-himeji",
+        "nameZh": "姬路",
+        "geo": {
+          "lat": 34.8394,
+          "lng": 134.6939
+        },
+        "countryCode": "JP"
+      },
+      {
+        "id": "p-maiko",
+        "nameZh": "舞子",
+        "geo": {
+          "lat": 34.6323,
+          "lng": 135.0345
+        },
+        "countryCode": "JP"
+      },
+      {
+        "id": "p-kyotostn",
+        "nameZh": "京都",
+        "geo": {
+          "lat": 34.9858,
+          "lng": 135.7588
+        },
+        "countryCode": "JP"
+      },
+      {
+        "id": "p-higashiyama",
+        "nameZh": "东山·银阁寺",
+        "geo": {
+          "lat": 35.055,
+          "lng": 135.805
+        },
+        "countryCode": "JP"
+      },
+      {
+        "id": "p-uji",
+        "nameZh": "宇治",
+        "geo": {
+          "lat": 34.8894,
+          "lng": 135.8074
+        },
+        "countryCode": "JP"
+      },
+      {
+        "id": "p-ohara",
+        "nameZh": "大原",
+        "geo": {
+          "lat": 35.125,
+          "lng": 135.88
+        },
+        "countryCode": "JP"
+      },
+      {
+        "id": "p-kibune",
+        "nameZh": "贵船",
+        "geo": {
+          "lat": 35.125,
+          "lng": 135.7
+        },
+        "countryCode": "JP"
+      },
+      {
+        "id": "p-arashiyama",
+        "nameZh": "岚山",
+        "geo": {
+          "lat": 35.017,
+          "lng": 135.678
+        },
+        "countryCode": "JP"
+      }
+    ],
+    "routes": [
+      {
+        "id": "day1",
+        "day": 1,
+        "placeIds": [
+          "p-kix",
+          "p-sannomiya"
+        ]
+      },
+      {
+        "id": "day2",
+        "day": 2,
+        "placeIds": [
+          "p-sannomiya",
+          "p-himeji",
+          "p-maiko",
+          "p-sannomiya"
+        ]
+      },
+      {
+        "id": "day3",
+        "day": 3,
+        "placeIds": [
+          "p-sannomiya",
+          "p-kyotostn"
+        ]
+      },
+      {
+        "id": "day4",
+        "day": 4,
+        "placeIds": [
+          "p-kyotostn",
+          "p-higashiyama"
+        ]
+      },
+      {
+        "id": "day5",
+        "day": 5,
+        "placeIds": [
+          "p-kyotostn",
+          "p-uji"
+        ]
+      },
+      {
+        "id": "day6",
+        "day": 6,
+        "placeIds": [
+          "p-kyotostn",
+          "p-kibune",
+          "p-ohara",
+          "p-arashiyama"
+        ]
+      },
+      {
+        "id": "day7",
+        "day": 7,
+        "placeIds": [
+          "p-kyotostn",
+          "p-kix"
+        ]
+      }
+    ],
+    "dailyRoutes": [],
+    "region": {
+      "id": "kansai",
+      "label": "关西",
+      "countryCode": "JP",
+      "heading": "KANSAI / 关西",
+      "title": "关西 · 旅行路线",
+      "description": "关西行程示意图"
+    }
+  },
+  "routeMap": {
+    "defaultRegionId": "kansai",
+    "regions": [
+      {
+        "id": "kansai",
+        "label": "关西",
+        "countryCode": "JP",
+        "scope": "template-schematic",
+        "mapMode": "frozen-template",
+        "templateId": "coastal-region",
+        "mapModeReason": "explicit-diy-override",
+        "mapModeMetrics": {
+          "placeCount": 10,
+          "geoPlaceCount": 10,
+          "widthKm": 108.01,
+          "heightKm": 76.68,
+          "spanKm": 112.63,
+          "averageNearestKm": 15.9,
+          "components": 1,
+          "largestLegKm": 77.93,
+          "jumpRatio": 3.55
+        },
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "canvas": {
+          "width": 1448,
+          "height": 1086
+        },
+        "projection": {
+          "type": "relative-schematic",
+          "bounds": null
+        },
+        "baseImage": "assets/maps/templates/template-03-coastal.webp",
+        "title": "关西 · 旅行路线",
+        "ariaLabel": "关西模板化旅行路线示意图，共7天",
+        "description": "关西行程示意图",
+        "disclaimer": "本图仅表达地点的相对方位与路线顺序，不代表真实比例或精确地理边界。",
+        "heading": {
+          "text": "KANSAI / 关西",
+          "x": 33,
+          "y": 105,
+          "size": 40
+        },
+        "legend": {
+          "x": 35,
+          "y": 168,
+          "gap": 43
+        },
+        "annotations": [],
+        "routes": [
+          {
+            "day": 1,
+            "color": "#397dc1",
+            "placeIds": [
+              "p-kix",
+              "p-sannomiya"
+            ],
+            "paths": [
+              "M951.35 701.38 C935.0 653.1 933.0 604.3 945.42 557.74"
+            ],
+            "overviewPaths": [
+              "M951.35 701.38 C935.0 653.1 933.0 604.3 945.42 557.74"
+            ]
+          },
+          {
+            "day": 2,
+            "color": "#e77e22",
+            "placeIds": [
+              "p-sannomiya",
+              "p-himeji",
+              "p-maiko",
+              "p-sannomiya"
+            ],
+            "paths": [
+              "M945.42 557.74 C874.6 510.3 796.6 485.8 716 485.66 C774.6 511.0 821.6 550.1 854.39 600.82 C889.6 595.3 920.6 580.6 945.42 557.74"
+            ],
+            "overviewPaths": [
+              "M945.42 557.74 C874.6 510.3 796.6 485.8 716 485.66 C774.6 511.0 821.6 550.1 854.39 600.82 C889.6 595.3 920.6 580.6 945.42 557.74"
+            ]
+          },
+          {
+            "day": 3,
+            "color": "#618344",
+            "placeIds": [
+              "p-sannomiya",
+              "p-kyotostn"
+            ],
+            "paths": [
+              "M945.42 557.74 C1003.5 505.7 1071.1 473.6 1144.09 463.25"
+            ],
+            "overviewPaths": [
+              "M945.42 557.74 C1003.5 505.7 1071.1 473.6 1144.09 463.25"
+            ]
+          },
+          {
+            "day": 4,
+            "color": "#209aaa",
+            "placeIds": [
+              "p-kyotostn",
+              "p-higashiyama"
+            ],
+            "paths": [
+              "M1144.09 463.25 C1172.5 442.7 1193.0 416.0 1204.54 384.91"
+            ],
+            "overviewPaths": [
+              "M1144.09 463.25 C1172.5 442.7 1193.0 416.0 1204.54 384.91"
+            ]
+          },
+          {
+            "day": 5,
+            "color": "#8865a5",
+            "placeIds": [
+              "p-kyotostn",
+              "p-uji"
+            ],
+            "paths": [
+              "M1144.09 463.25 C1178.2 458.2 1211.0 462.9 1240.44 476.85"
+            ],
+            "overviewPaths": [
+              "M1144.09 463.25 C1178.2 458.2 1211.0 462.9 1240.44 476.85"
+            ]
+          },
+          {
+            "day": 6,
+            "color": "#df6185",
+            "placeIds": [
+              "p-kyotostn",
+              "p-kibune",
+              "p-ohara",
+              "p-arashiyama"
+            ],
+            "paths": [
+              "M1144.09 463.25 C1167.6 407.4 1174.1 349.6 1163.19 293.3 C1198.0 286.9 1231.8 290.5 1262.49 303.82 C1201.9 311.9 1148.4 335.7 1105.03 373.89"
+            ],
+            "overviewPaths": [
+              "M1144.09 463.25 C1167.6 407.4 1174.1 349.6 1163.19 293.3 C1198.0 286.9 1231.8 290.5 1262.49 303.82 C1201.9 311.9 1148.4 335.7 1105.03 373.89"
+            ]
+          },
+          {
+            "day": 7,
+            "color": "#397dc1",
+            "placeIds": [
+              "p-kyotostn",
+              "p-kix"
+            ],
+            "paths": [
+              "M1144.09 463.25 C1101.9 563.1 1036.3 644.1 951.35 701.38"
+            ],
+            "overviewPaths": [
+              "M1144.09 463.25 C1101.9 563.1 1036.3 644.1 951.35 701.38"
+            ]
+          }
+        ],
+        "places": [
+          {
+            "id": "p-kix",
+            "x": 951.35,
+            "y": 701.38,
+            "color": "#397dc1",
+            "tx": 983.35,
+            "ty": 669.38,
+            "size": 24,
+            "anchor": "start",
+            "lines": [
+              "关西机场"
+            ],
+            "query": "关西机场 关西",
+            "geo": {
+              "lat": 34.4342,
+              "lng": 135.2328
+            },
+            "days": [
+              1,
+              7
+            ]
+          },
+          {
+            "id": "p-sannomiya",
+            "x": 945.42,
+            "y": 557.74,
+            "color": "#397dc1",
+            "tx": 913.42,
+            "ty": 525.74,
+            "size": 24,
+            "anchor": "end",
+            "lines": [
+              "神户三宫"
+            ],
+            "query": "神户三宫 关西",
+            "geo": {
+              "lat": 34.6948,
+              "lng": 135.1955
+            },
+            "days": [
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "id": "p-himeji",
+            "x": 716,
+            "y": 485.66,
+            "color": "#e77e22",
+            "tx": 794,
+            "ty": 423.66,
+            "size": 24,
+            "anchor": "start",
+            "lines": [
+              "姬路"
+            ],
+            "query": "姬路 关西",
+            "geo": {
+              "lat": 34.8394,
+              "lng": 134.6939
+            },
+            "days": [
+              2
+            ]
+          },
+          {
+            "id": "p-maiko",
+            "x": 854.39,
+            "y": 600.82,
+            "color": "#e77e22",
+            "tx": 776.39,
+            "ty": 676.82,
+            "size": 24,
+            "anchor": "end",
+            "lines": [
+              "舞子"
+            ],
+            "query": "舞子 关西",
+            "geo": {
+              "lat": 34.6323,
+              "lng": 135.0345
+            },
+            "days": [
+              2
+            ]
+          },
+          {
+            "id": "p-kyotostn",
+            "x": 1144.09,
+            "y": 463.25,
+            "color": "#618344",
+            "tx": 1112.09,
+            "ty": 431.25,
+            "size": 24,
+            "anchor": "end",
+            "lines": [
+              "京都"
+            ],
+            "query": "京都 关西",
+            "geo": {
+              "lat": 34.9858,
+              "lng": 135.7588
+            },
+            "days": [
+              3,
+              4,
+              5,
+              6,
+              7
+            ]
+          },
+          {
+            "id": "p-higashiyama",
+            "x": 1204.54,
+            "y": 384.91,
+            "color": "#209aaa",
+            "tx": 1236.54,
+            "ty": 352.91,
+            "size": 24,
+            "anchor": "start",
+            "lines": [
+              "东山·银阁寺"
+            ],
+            "query": "东山·银阁寺 关西",
+            "geo": {
+              "lat": 35.055,
+              "lng": 135.805
+            },
+            "days": [
+              4
+            ]
+          },
+          {
+            "id": "p-uji",
+            "x": 1240.44,
+            "y": 476.85,
+            "color": "#8865a5",
+            "tx": 1272.44,
+            "ty": 444.85,
+            "size": 24,
+            "anchor": "start",
+            "lines": [
+              "宇治"
+            ],
+            "query": "宇治 关西",
+            "geo": {
+              "lat": 34.8894,
+              "lng": 135.8074
+            },
+            "days": [
+              5
+            ]
+          },
+          {
+            "id": "p-ohara",
+            "x": 1262.49,
+            "y": 303.82,
+            "color": "#df6185",
+            "tx": 1184.49,
+            "ty": 241.82,
+            "size": 24,
+            "anchor": "end",
+            "lines": [
+              "大原"
+            ],
+            "query": "大原 关西",
+            "geo": {
+              "lat": 35.125,
+              "lng": 135.88
+            },
+            "days": [
+              6
+            ]
+          },
+          {
+            "id": "p-kibune",
+            "x": 1163.19,
+            "y": 293.3,
+            "color": "#df6185",
+            "tx": 1241.19,
+            "ty": 231.3,
+            "size": 24,
+            "anchor": "start",
+            "lines": [
+              "贵船"
+            ],
+            "query": "贵船 关西",
+            "geo": {
+              "lat": 35.125,
+              "lng": 135.7
+            },
+            "days": [
+              6
+            ]
+          },
+          {
+            "id": "p-arashiyama",
+            "x": 1105.03,
+            "y": 373.89,
+            "color": "#df6185",
+            "tx": 1027.03,
+            "ty": 311.89,
+            "size": 24,
+            "anchor": "end",
+            "lines": [
+              "岚山"
+            ],
+            "query": "岚山 关西",
+            "geo": {
+              "lat": 35.017,
+              "lng": 135.678
+            },
+            "days": [
+              6
+            ]
+          }
+        ],
+        "overviewPlaceIds": [
+          "p-kix",
+          "p-sannomiya",
+          "p-himeji",
+          "p-maiko",
+          "p-kyotostn",
+          "p-higashiyama",
+          "p-uji",
+          "p-ohara",
+          "p-kibune",
+          "p-arashiyama"
+        ],
+        "dailyLayouts": {
+          "1": {
+            "places": [
+              "p-kix",
+              "p-sannomiya"
+            ],
+            "labels": {
+              "p-kix": {
+                "x": 983.35,
+                "y": 669.38,
+                "anchor": "start"
+              },
+              "p-sannomiya": {
+                "x": 913.42,
+                "y": 525.74,
+                "anchor": "end"
+              }
+            },
+            "transport": [
+              {
+                "items": [],
+                "x": 948.38,
+                "y": 629.56
+              }
+            ]
+          },
+          "2": {
+            "places": [
+              "p-sannomiya",
+              "p-himeji",
+              "p-maiko"
+            ],
+            "labels": {
+              "p-sannomiya": {
+                "x": 913.42,
+                "y": 525.74,
+                "anchor": "end"
+              },
+              "p-himeji": {
+                "x": 794,
+                "y": 423.66,
+                "anchor": "start"
+              },
+              "p-maiko": {
+                "x": 776.39,
+                "y": 676.82,
+                "anchor": "end"
+              }
+            },
+            "transport": [
+              {
+                "items": [],
+                "x": 830.71,
+                "y": 521.7
+              },
+              {
+                "items": [],
+                "x": 785.19,
+                "y": 543.24
+              },
+              {
+                "items": [],
+                "x": 899.9,
+                "y": 579.28
+              }
+            ]
+          },
+          "3": {
+            "places": [
+              "p-sannomiya",
+              "p-kyotostn"
+            ],
+            "labels": {
+              "p-sannomiya": {
+                "x": 913.42,
+                "y": 525.74,
+                "anchor": "end"
+              },
+              "p-kyotostn": {
+                "x": 1112.09,
+                "y": 431.25,
+                "anchor": "end"
+              }
+            },
+            "transport": [
+              {
+                "items": [],
+                "x": 1044.75,
+                "y": 510.5
+              }
+            ]
+          },
+          "4": {
+            "places": [
+              "p-kyotostn",
+              "p-higashiyama"
+            ],
+            "labels": {
+              "p-kyotostn": {
+                "x": 1112.09,
+                "y": 431.25,
+                "anchor": "end"
+              },
+              "p-higashiyama": {
+                "x": 1236.54,
+                "y": 352.91,
+                "anchor": "start"
+              }
+            },
+            "transport": [
+              {
+                "items": [],
+                "x": 1174.32,
+                "y": 424.08
+              }
+            ]
+          },
+          "5": {
+            "places": [
+              "p-kyotostn",
+              "p-uji"
+            ],
+            "labels": {
+              "p-kyotostn": {
+                "x": 1112.09,
+                "y": 431.25,
+                "anchor": "end"
+              },
+              "p-uji": {
+                "x": 1272.44,
+                "y": 444.85,
+                "anchor": "start"
+              }
+            },
+            "transport": [
+              {
+                "items": [],
+                "x": 1192.26,
+                "y": 470.05
+              }
+            ]
+          },
+          "6": {
+            "places": [
+              "p-kyotostn",
+              "p-kibune",
+              "p-ohara",
+              "p-arashiyama"
+            ],
+            "labels": {
+              "p-kyotostn": {
+                "x": 1112.09,
+                "y": 431.25,
+                "anchor": "end"
+              },
+              "p-kibune": {
+                "x": 1241.19,
+                "y": 231.3,
+                "anchor": "start"
+              },
+              "p-ohara": {
+                "x": 1184.49,
+                "y": 241.82,
+                "anchor": "end"
+              },
+              "p-arashiyama": {
+                "x": 1027.03,
+                "y": 311.89,
+                "anchor": "end"
+              }
+            },
+            "transport": [
+              {
+                "items": [],
+                "x": 1153.64,
+                "y": 378.27
+              },
+              {
+                "items": [],
+                "x": 1212.84,
+                "y": 298.56
+              },
+              {
+                "items": [],
+                "x": 1183.76,
+                "y": 338.86
+              }
+            ]
+          },
+          "7": {
+            "places": [
+              "p-kyotostn",
+              "p-kix"
+            ],
+            "labels": {
+              "p-kyotostn": {
+                "x": 1112.09,
+                "y": 431.25,
+                "anchor": "end"
+              },
+              "p-kix": {
+                "x": 983.35,
+                "y": 669.38,
+                "anchor": "start"
+              }
+            },
+            "transport": [
+              {
+                "items": [],
+                "x": 1047.72,
+                "y": 582.32
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
