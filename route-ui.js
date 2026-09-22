@@ -126,8 +126,17 @@ function activateDayMaps(root) {
 }
 
 function renderRoutePanel(regionId, dayNumber = 0) {
-  /* DIY 2026-09-22：总览地图改用 OSM 真实底图静态图（真实比例），替换模板手绘图；
-     地名热点复用 place-map 弹层（data-map-query 全局委托），点开即 Google Maps */
+  /* DIY 2026-09-22：总览+每日地图均为 OSM 真实底图静态图（真实比例），替换模板手绘图；
+     日期页签沿用原 data-route-day 委托；总览地名热点复用 place-map 弹层（Google Maps） */
+  const DAY_MAPS = [
+    { day: 1, label: "09/26", color: "#2f6ea5" },
+    { day: 2, label: "09/27", color: "#e08a2e" },
+    { day: 3, label: "09/28", color: "#5a7d3a" },
+    { day: 4, label: "09/29", color: "#2e9e97" },
+    { day: 5, label: "09/30", color: "#8a63b5" },
+    { day: 6, label: "10/01", color: "#d4547e" },
+    { day: 7, label: "10/02", color: "#4a6fb5" }
+  ];
   const OSM_SPOTS = [
     { label: "关西机场", query: "関西国際空港", x: 43.9, y: 83.36 },
     { label: "神户三宫", query: "神戸三宮駅", x: 41.96, y: 61.41 },
@@ -141,9 +150,16 @@ function renderRoutePanel(regionId, dayNumber = 0) {
     { label: "岚山", query: "渡月橋", x: 67.06, y: 34.18 }
   ];
   const root = $("#route-explorer");
-  root.innerHTML = `<figure class="osm-map">
-    <img src="assets/maps/kansai-osm.webp" alt="关西七日路线图（OpenStreetMap 底图，真实比例）" loading="lazy">
-    ${OSM_SPOTS.map((s) => `<button type="button" class="osm-spot" style="left:${s.x}%;top:${s.y}%"
+  const active = DAY_MAPS.find((d) => d.day === dayNumber);
+  const src = active ? `assets/maps/day-${active.day}.webp` : "assets/maps/kansai-osm.webp";
+  const alt = active ? `Day ${active.day}（${active.label}）当日路线图` : "关西七日路线总览";
+  root.innerHTML = `<div class="route-day-tabs" aria-label="路线日期">
+    <button type="button" data-route-day="0" aria-pressed="${!active}">总览</button>
+    ${DAY_MAPS.map((d) => `<button type="button" data-route-day="${d.day}" style="--route-color:${d.color}" aria-pressed="${active?.day === d.day}"><i></i>${d.label}</button>`).join("")}
+  </div>
+  <figure class="osm-map">
+    <img src="${src}" alt="${escapeHtml(alt)}（OpenStreetMap 底图，真实比例）" loading="lazy">
+    ${active ? "" : OSM_SPOTS.map((s) => `<button type="button" class="osm-spot" style="left:${s.x}%;top:${s.y}%"
       data-map-query="${escapeHtml(s.query)}" data-map-label="${escapeHtml(s.label)}"
       aria-haspopup="dialog" aria-controls="place-map" aria-label="查看 ${escapeHtml(s.label)} 的地图"></button>`).join("")}
     <button type="button" class="osm-zoom" aria-label="放大地图">⤢ 放大</button>
@@ -151,7 +167,7 @@ function renderRoutePanel(regionId, dayNumber = 0) {
   root.querySelector(".osm-zoom").addEventListener("click", () => {
     const dialog = $("#map-dialog");
     if (!dialog) return;
-    $("#map-dialog-content").innerHTML = `<img src="assets/maps/kansai-osm.webp" alt="关西七日路线图（大图）" style="display:block;max-width:96vw;max-height:88vh;width:auto;height:auto">`;
+    $("#map-dialog-content").innerHTML = `<img src="${src}" alt="${escapeHtml(alt)}（大图）" style="display:block;max-width:96vw;max-height:88vh;width:auto;height:auto">`;
     dialog.showModal();
   });
 }
