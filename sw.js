@@ -1,5 +1,5 @@
 // 网络优先：有网时拿最新版并更新缓存；没网时用缓存
-const CACHE = 'kansai-trip-202609141900';
+const CACHE = 'kansai-trip-202609221030';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-180.png', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(ASSETS); }));
