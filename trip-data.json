@@ -62,14 +62,7 @@
     {
       "id": "j-return",
       "title": "回程 · 大阪 → 成都（北京中转）",
-      "placeholder": true,
-      "status": "pending",
-      "missingFields": [
-        "flightNumber",
-        "departureTime",
-        "arrivalAirport"
-      ],
-      "note": "四次航变暂定、待国航出票：10/2 14:00 过 KIX→PEK（约 17:15 到 T3），傍晚 PEK→成都，当晚 ~22:00 落地（双流/天府待票面）；行李是否直挂待确认。"
+      "note": "✅ 已出票（2026-09-22 五次改动后落定）；国航屡次航变，出发前留意短信。值机时确认行李是否直挂双流。"
     },
     {
       "id": "j-uk",
@@ -128,6 +121,57 @@
         "utcOffset": "+09:00",
         "terminal": "T1"
       }
+    },
+    {
+      "id": "f-ca161",
+      "journeyId": "j-return",
+      "sequence": 1,
+      "airline": {
+        "nameZh": "中国国际航空"
+      },
+      "flightNumber": "CA161",
+      "departure": {
+        "airportCode": "KIX",
+        "city": "大阪",
+        "date": "2026-10-02",
+        "time": "14:05",
+        "utcOffset": "+09:00",
+        "terminal": "T1"
+      },
+      "arrival": {
+        "airportCode": "PEK",
+        "city": "北京",
+        "date": "2026-10-02",
+        "time": "17:20",
+        "utcOffset": "+08:00",
+        "terminal": "T3"
+      },
+      "note": "北京中转 2h45：入境边检 → 国内段再安检 → 登机"
+    },
+    {
+      "id": "f-ret2",
+      "journeyId": "j-return",
+      "sequence": 2,
+      "airline": {
+        "nameZh": "中国国际航空"
+      },
+      "flightNumber": "待补",
+      "departure": {
+        "airportCode": "PEK",
+        "city": "北京",
+        "date": "2026-10-02",
+        "time": "20:05",
+        "utcOffset": "+08:00",
+        "terminal": "T3"
+      },
+      "arrival": {
+        "airportCode": "CTU",
+        "city": "成都双流",
+        "date": "2026-10-02",
+        "time": "22:25",
+        "utcOffset": "+08:00"
+      },
+      "note": "落地双流后自行打车"
     },
     {
       "id": "f-ca423",
@@ -640,7 +684,7 @@
     {
       "day": 7,
       "date": "2026-10-02",
-      "title": "离境 · Haruka 去机场（暂定 14:00 过起飞，当晚到家）",
+      "title": "离境 · Haruka 去机场（CA161 14:05 起飞，当晚到家）",
       "locations": [
         "京都",
         "关西机场"
@@ -668,25 +712,25 @@
           "id": "d7-4",
           "time": "11:00",
           "type": "note",
-          "text": "值机托运（行李是否直挂到成都，出票后确认）、出境、免税店午饭"
+          "text": "值机托运（值机时确认行李是否直挂双流）、出境、免税店午饭"
         },
         {
           "id": "d7-5",
-          "time": "14:00过",
+          "time": "14:05",
           "type": "flight",
-          "text": "起飞（暂定、航班号待出票）→ 约 17:15 到北京 T3"
+          "text": "CA161 起飞 → 17:20 到北京 T3"
         },
         {
           "id": "d7-6",
-          "time": "傍晚",
+          "time": "20:05",
           "type": "transfer",
-          "text": "PEK T3 中转：入境边检 → 国内段再安检 → 登机（建议中转 ≥2h，出票后核对）"
+          "text": "PEK T3 中转 2h45（入境边检 → 国内段再安检）→ 20:05 起飞"
         },
         {
           "id": "d7-7",
-          "time": "~22:00",
+          "time": "22:25",
           "type": "flight",
-          "text": "落地成都（双流/天府待票面），自行打车回家"
+          "text": "落地成都双流 CTU，自行打车回家（⚠️ 是双流不是天府；10/10 CA423 从天府 T1 走）"
         }
       ]
     }
@@ -834,12 +878,17 @@
     "packingItems": [
       {
         "id": "todo-1",
-        "text": "国航改签出票确认（第一优先）：确认航班号/时刻/落地机场（双流还是天府）/行李是否直挂，核 PEK 中转时长 ≥2h",
-        "completed": false
+        "text": "机票 ✅ 出票落定：回程 CA161（KIX 14:05→PEK 17:20）+ PEK 20:05→双流 22:25。国航屡次航变，出发前再留意短信",
+        "completed": true
       },
       {
         "id": "todo-2",
-        "text": "拿到票面后核对签证行程单的到达机场",
+        "text": "改签证行程单/在留材料的到达机场：天府 TFU → 双流 CTU（票面已确认双流，现在可办）",
+        "completed": false
+      },
+      {
+        "id": "todo-9",
+        "text": "10/2 KIX 值机时确认行李是否直挂双流",
         "completed": false
       },
       {
@@ -903,7 +952,7 @@
   "issuesAndUncertainties": [
     {
       "id": "iss-1",
-      "text": "回程航班四次航变后暂定（10/2 14:00 过 KIX→PEK→当晚 ~22:00 落成都），待国航出票；落地机场（双流/天府）与行李直挂待票面确认"
+      "text": "回程 PEK→双流段的航班号待补录（时刻已确认 20:05→22:25）；国航屡次航变，出发前留意变动通知"
     }
   ],
   "map": {

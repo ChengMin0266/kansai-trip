@@ -126,14 +126,29 @@ function activateDayMaps(root) {
 }
 
 function renderRoutePanel(regionId, dayNumber = 0) {
-  /* DIY 2026-09-22：总览地图改用 OSM 真实底图静态图（真实比例），替换模板手绘图 */
+  /* DIY 2026-09-22：总览地图改用 OSM 真实底图静态图（真实比例），替换模板手绘图；
+     地名热点复用 place-map 弹层（data-map-query 全局委托），点开即 Google Maps */
+  const OSM_SPOTS = [
+    { label: "关西机场", query: "関西国際空港", x: 43.9, y: 83.36 },
+    { label: "神户三宫", query: "神戸三宮駅", x: 41.96, y: 61.41 },
+    { label: "姬路", query: "姫路城", x: 15.87, y: 49.21 },
+    { label: "舞子", query: "舞子公園", x: 33.59, y: 66.68 },
+    { label: "京都", query: "京都駅", x: 71.26, y: 36.82 },
+    { label: "银阁寺", query: "銀閣寺", x: 73.31, y: 33.34 },
+    { label: "宇治", query: "平等院", x: 73.79, y: 44.98 },
+    { label: "大原", query: "三千院", x: 75.17, y: 25.46 },
+    { label: "贵船", query: "貴船神社", x: 71.48, y: 25.3 },
+    { label: "岚山", query: "渡月橋", x: 67.06, y: 34.18 }
+  ];
   const root = $("#route-explorer");
-  root.innerHTML = `<figure class="osm-map" style="margin:0">
-    <img src="assets/maps/kansai-osm.webp" alt="关西七日路线图（OpenStreetMap 底图，真实比例）"
-         style="display:block;width:100%;height:auto;border-radius:14px;border:1px solid rgba(0,0,0,.08);cursor:zoom-in" loading="lazy">
+  root.innerHTML = `<figure class="osm-map">
+    <img src="assets/maps/kansai-osm.webp" alt="关西七日路线图（OpenStreetMap 底图，真实比例）" loading="lazy">
+    ${OSM_SPOTS.map((s) => `<button type="button" class="osm-spot" style="left:${s.x}%;top:${s.y}%"
+      data-map-query="${escapeHtml(s.query)}" data-map-label="${escapeHtml(s.label)}"
+      aria-haspopup="dialog" aria-controls="place-map" aria-label="查看 ${escapeHtml(s.label)} 的地图"></button>`).join("")}
+    <button type="button" class="osm-zoom" aria-label="放大地图">⤢ 放大</button>
   </figure>`;
-  const img = root.querySelector("img");
-  img.addEventListener("click", () => {
+  root.querySelector(".osm-zoom").addEventListener("click", () => {
     const dialog = $("#map-dialog");
     if (!dialog) return;
     $("#map-dialog-content").innerHTML = `<img src="assets/maps/kansai-osm.webp" alt="关西七日路线图（大图）" style="display:block;max-width:96vw;max-height:88vh;width:auto;height:auto">`;
