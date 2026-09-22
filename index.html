@@ -1045,6 +1045,15 @@ const SPOTS = {
   .sum-card .nm{font-size:12px; letter-spacing:.14em; color:var(--chip-mute)}
   .sum-card .tt2{font-size:19px; font-weight:600; font-variant-numeric:tabular-nums; margin:2px 0}
   .sum-card .bd{font-size:12px; color:var(--ink-2); font-variant-numeric:tabular-nums; line-height:1.6}
+  .sum-card.main{flex:1 1 100%; border-color:var(--shu); border-width:1.5px}
+  .sum-card.main .nm{color:var(--shu)}
+  .sum-card.main .tt2{font-size:26px}
+  .sync-row{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:14px}
+  .sync-btn{
+    appearance:none; font-family:inherit; font-size:13.5px; cursor:pointer;
+    border:1px solid var(--kobe); border-radius:5px; background:var(--kobe-bg); color:var(--kobe); padding:7px 16px; font-weight:600;
+  }
+  #sync-msg{font-size:12.5px; color:var(--kyoto)}
   .lg-list{list-style:none; margin:14px 0 0; padding:0}
   .lg-list li{
     display:flex; gap:10px; align-items:baseline; padding:8px 2px;
@@ -1095,7 +1104,11 @@ const SPOTS = {
     </div>
     <div class="lg-sum" id="lg-sum"></div>
     <ul class="lg-list" id="lg-list"></ul>
-    <p class="tool-note">账目存在本机浏览器里（离线可用，不跨设备同步）；汇总按当前汇率折算成人民币。删除某笔点右侧 ×。</p>
+    <div class="sync-row">
+      <button type="button" class="sync-btn" id="lg-sync">⇄ 同步到对方手机</button>
+      <span id="sync-msg"></span>
+    </div>
+    <p class="tool-note">账目存在本机浏览器里，离线可用；汇总按当前汇率折算成人民币，「合计」即两人总花费。两台手机同步：点「⇄ 同步」把生成的链接微信发给对方，对方点开即自动合并（按笔去重，删除也会同步）；对方记了新账就让 ta 反向发一次。</p>
   </div>
 </div>
 
@@ -1152,9 +1165,10 @@ const SPOTS = {
   $('cv-jpy').addEventListener('input',convert);
 
   /* ---- 记账 ---- */
-  var LKEY='kansai_ledger_v1', ledger=[];
+  var LKEY='kansai_ledger_v1', DKEY='kansai_ledger_del_v1', ledger=[], dels=[];
   try{ledger=JSON.parse(localStorage.getItem(LKEY)||'[]')||[]}catch(e){}
-  function saveLedger(){try{localStorage.setItem(LKEY,JSON.stringify(ledger))}catch(e){}}
+  try{dels=JSON.parse(localStorage.getItem(DKEY)||'[]')||[]}catch(e){}
+  function saveLedger(){try{localStorage.setItem(LKEY,JSON.stringify(ledger));localStorage.setItem(DKEY,JSON.stringify(dels))}catch(e){}}
   var who='mc';
   document.querySelectorAll('.lg-form .who button').forEach(function(b){
     b.addEventListener('click',function(){
@@ -1172,11 +1186,11 @@ const SPOTS = {
   function fmtAmt(amt,cur){return (cur==='JPY'?fmt(amt,0):fmt(amt,2))+' '+SYM[cur]}
   function renderSum(){
     var box=$('lg-sum'); box.textContent='';
-    ['mc','mj','合计'].forEach(function(k){
+    ['合计','mc','mj'].forEach(function(k){
       var rows=(k==='合计')?ledger:ledger.filter(function(e){return e.who===k});
       var per={JPY:0,CNY:0,GBP:0}, cny=0, incomplete=false;
       rows.forEach(function(e){per[e.cur]+=e.amt; var c=toCny(e.amt,e.cur); if(c===null){incomplete=true}else{cny+=c}});
-      var card=document.createElement('div'); card.className='sum-card';
+      var card=document.createElement('div'); card.className='sum-card'+(k==='合计'?' main':'');
       var nm=document.createElement('div'); nm.className='nm'; nm.textContent=k.toUpperCase(); card.appendChild(nm);
       var tt=document.createElement('div'); tt.className='tt2';
       tt.textContent=incomplete?'≈ ¥ –（要先更新汇率）':'≈ ¥ '+fmt(cny,2); card.appendChild(tt);
@@ -1197,7 +1211,11 @@ const SPOTS = {
       var d=document.createElement('span'); d.className='d'; d.textContent=e.desc; li.appendChild(d);
       var a=document.createElement('span'); a.className='a'; a.textContent=fmtAmt(e.amt,e.cur); li.appendChild(a);
       var x=document.createElement('button'); x.className='del'; x.textContent='×'; x.setAttribute('aria-label','删除');
-      x.addEventListener('click',function(){ledger=ledger.filter(function(t){return t.id!==e.id});saveLedger();renderSum();renderList()});
+      x.addEventListener('click',function(){
+        ledger=ledger.filter(function(t){return t.id!==e.id});
+        if(dels.indexOf(e.id)<0)dels.push(e.id);
+        saveLedger();renderSum();renderList();
+      });
       li.appendChild(x); ul.appendChild(li);
     });
   }
@@ -1208,6 +1226,37 @@ const SPOTS = {
     saveLedger(); $('lg-desc').value=''; $('lg-amt').value='';
     renderSum(); renderList();
   });
+
+  /* ---- 两台手机同步：链接携带账本，打开自动合并 ---- */
+  function b64e(s){return btoa(unescape(encodeURIComponent(s)))}
+  function b64d(s){return decodeURIComponent(escape(atob(s)))}
+  $('lg-sync').addEventListener('click',function(){
+    var payload=b64e(JSON.stringify({e:ledger,d:dels}));
+    var url=location.origin+location.pathname+'#sync='+payload;
+    var done=function(msg){$('sync-msg').textContent=msg; setTimeout(function(){$('sync-msg').textContent=''},6000)};
+    if(navigator.share){
+      navigator.share({title:'关西行程记账同步',url:url}).then(function(){done('已发出，对方点开链接即合并')}).catch(function(){done('')});
+    }else if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(function(){done('链接已复制，微信发给对方即可')},function(){prompt('复制这个链接发给对方：',url)});
+    }else{prompt('复制这个链接发给对方：',url)}
+  });
+  (function(){
+    var m=location.hash.match(/#sync=([A-Za-z0-9+/=]+)/); if(!m)return;
+    try{
+      var p=JSON.parse(b64d(m[1]))||{}; var inc=p.e||[], incDel=p.d||[];
+      incDel.forEach(function(id){if(dels.indexOf(id)<0)dels.push(id)});
+      var have={}; ledger.forEach(function(e){have[e.id]=1});
+      var added=0;
+      inc.forEach(function(e){ if(e&&e.id&&!have[e.id]&&dels.indexOf(e.id)<0){ledger.push(e);added++;} });
+      ledger=ledger.filter(function(e){return dels.indexOf(e.id)<0});
+      ledger.sort(function(a,b){return (a.ts||0)-(b.ts||0)});
+      saveLedger();
+      $('sync-msg').textContent='已合并对方账本：新增 '+added+' 笔';
+      /* 打开同步链接时直接停在记账页 */
+      document.querySelector('#sheetbar button[data-pane="tools"]').click();
+    }catch(err){}
+    try{history.replaceState(null,'',location.pathname)}catch(e){}
+  })();
 
   renderRates(); renderSum(); renderList();
   if(!rates||Date.now()-rates.ts>6*3600*1000){ if(navigator.onLine!==false) fetchRates(); }
