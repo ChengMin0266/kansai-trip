@@ -137,6 +137,7 @@ function renderRoutePanel(regionId, dayNumber = 0) {
     { day: 6, label: "10/01", color: "#d4547e" },
     { day: 7, label: "10/02", color: "#4a6fb5" }
   ];
+  const DAY_SPOTS = {"1": [{"label": "关西机场", "query": "関西国際空港", "x": 52.26, "y": 77.55}, {"label": "神户三宫", "query": "神戸三宮駅", "x": 47.74, "y": 23.96}, {"label": "兵库县立美术馆", "query": "兵庫県立美術館", "x": 49.81, "y": 22.4}], "2": [{"label": "神户三宫", "query": "神戸三宮駅", "x": 80.44, "y": 58.45}, {"label": "姬路城", "query": "姫路城", "x": 19.56, "y": 28.65}, {"label": "舞子公园", "query": "舞子公園", "x": 60.9, "y": 71.32}], "3": [{"label": "神户三宫", "query": "神戸三宮駅", "x": 16.35, "y": 78.72}, {"label": "港塔", "query": "神戸ポートタワー", "x": 15.29, "y": 81.26}, {"label": "京都站", "query": "京都駅", "x": 84.71, "y": 18.68}], "4": [{"label": "蹴上·南禅寺", "query": "南禅寺", "x": 64.56, "y": 41.89}, {"label": "永观堂", "query": "永観堂", "x": 65.05, "y": 36.44}, {"label": "哲学之道", "query": "哲学の道", "x": 65.73, "y": 27.17}, {"label": "银阁寺", "query": "銀閣寺", "x": 69.13, "y": 15.92}, {"label": "四条河原町", "query": "四条河原町", "x": 40.0, "y": 54.3}, {"label": "京都站", "query": "京都駅", "x": 30.87, "y": 84.07}], "5": [{"label": "京都站", "query": "京都駅", "x": 43.63, "y": 27.85}, {"label": "平等院", "query": "平等院", "x": 55.42, "y": 67.68}, {"label": "宇治上神社", "query": "宇治上神社", "x": 56.37, "y": 66.64}, {"label": "任天堂博物馆", "query": "ニンテンドーミュージアム", "x": 47.46, "y": 72.13}], "6": [{"label": "京都站", "query": "京都駅", "x": 52.59, "y": 78.12}, {"label": "贵船神社", "query": "貴船神社", "x": 53.6, "y": 21.85}, {"label": "三千院", "query": "三千院", "x": 70.91, "y": 22.68}, {"label": "瑠璃光院", "query": "瑠璃光院", "x": 66.95, "y": 33.78}, {"label": "爱宕念佛寺", "query": "愛宕念仏寺", "x": 29.09, "y": 60.13}, {"label": "祇王寺", "query": "祇王寺", "x": 30.23, "y": 62.04}, {"label": "常寂光寺", "query": "常寂光寺", "x": 31.08, "y": 63.65}, {"label": "竹林·渡月桥", "query": "竹林の小径", "x": 32.24, "y": 66.05}], "7": [{"label": "京都站", "query": "京都駅", "x": 65.96, "y": 21.54}, {"label": "关西机场", "query": "関西国際空港", "x": 34.04, "y": 78.35}]};
   const OSM_SPOTS = [
     { label: "关西机场", query: "関西国際空港", x: 43.9, y: 83.36 },
     { label: "神户三宫", query: "神戸三宮駅", x: 41.96, y: 61.41 },
@@ -159,7 +160,7 @@ function renderRoutePanel(regionId, dayNumber = 0) {
   </div>
   <figure class="osm-map">
     <img src="${src}" alt="${escapeHtml(alt)}（OpenStreetMap 底图，真实比例）" loading="lazy">
-    ${active ? "" : OSM_SPOTS.map((s) => `<button type="button" class="osm-spot" style="left:${s.x}%;top:${s.y}%"
+    ${(active ? (DAY_SPOTS[active.day] || []) : OSM_SPOTS).map((s) => `<button type="button" class="osm-spot" style="left:${s.x}%;top:${s.y}%"
       data-map-query="${escapeHtml(s.query)}" data-map-label="${escapeHtml(s.label)}"
       aria-haspopup="dialog" aria-controls="place-map" aria-label="查看 ${escapeHtml(s.label)} 的地图"></button>`).join("")}
     <button type="button" class="osm-zoom" aria-label="放大地图">⤢ 放大</button>
