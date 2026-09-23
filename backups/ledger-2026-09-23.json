@@ -1,0 +1,17 @@
+{
+  "kansaiLedgerBackup": 1,
+  "exportedAt": "2026-09-23T09:55:15.935Z",
+  "settings": { "baseCurrency": "CNY", "commonCurrencies": ["JPY", "GBP"], "lastCurrency": "CNY" },
+  "travelers": [
+    { "id": "person-3a4cb3e3-8778-4210-a2fb-091fcb9757a4", "name": "mc", "initial": "M", "color": "#D96C42" },
+    { "id": "person-59c93a23-b366-43e4-82b0-0d4f58fc068b", "name": "mj", "initial": "M", "color": "#217D91" }
+  ],
+  "bills": [
+    { "id": "bill-22fc7c73-aa7d-458f-bce6-cb681a12da12", "originalAmountCents": 16621, "baseAmountCents": 148943, "currency": "GBP", "category": "住宿", "note": "神户酒店", "orderedAt": "2026-09-23T10:44", "payerId": "person-3a4cb3e3-8778-4210-a2fb-091fcb9757a4", "participantIds": ["person-3a4cb3e3-8778-4210-a2fb-091fcb9757a4", "person-59c93a23-b366-43e4-82b0-0d4f58fc068b"], "createdAt": "2026-09-23T09:44:52.968Z", "updatedAt": "2026-09-23T09:44:52.968Z" },
+    { "id": "bill-ae7f44d5-3456-4f3a-938a-7a1d485d5472", "originalAmountCents": 26235, "baseAmountCents": 235095, "currency": "GBP", "category": "住宿", "note": "京都酒店", "orderedAt": "2026-09-23T10:44", "payerId": "person-3a4cb3e3-8778-4210-a2fb-091fcb9757a4", "participantIds": ["person-3a4cb3e3-8778-4210-a2fb-091fcb9757a4", "person-59c93a23-b366-43e4-82b0-0d4f58fc068b"], "createdAt": "2026-09-23T09:45:14.945Z", "updatedAt": "2026-09-23T09:45:14.945Z" },
+    { "id": "bill-2a0e136e-d583-4f48-9b85-f9d0ceed3b63", "originalAmountCents": 3057, "baseAmountCents": 27394, "currency": "GBP", "category": "其他", "note": "任天堂博物馆", "orderedAt": "2026-09-23T10:45", "payerId": "person-3a4cb3e3-8778-4210-a2fb-091fcb9757a4", "participantIds": ["person-3a4cb3e3-8778-4210-a2fb-091fcb9757a4", "person-59c93a23-b366-43e4-82b0-0d4f58fc068b"], "createdAt": "2026-09-23T09:46:52.800Z", "updatedAt": "2026-09-23T09:46:52.800Z" },
+    { "id": "bill-af903577-7282-463d-a214-59273627a847", "originalAmountCents": 27553, "baseAmountCents": 246906, "currency": "GBP", "category": "餐饮", "note": "roan米三订餐", "orderedAt": "2026-09-23T10:46", "payerId": "person-3a4cb3e3-8778-4210-a2fb-091fcb9757a4", "participantIds": ["person-3a4cb3e3-8778-4210-a2fb-091fcb9757a4", "person-59c93a23-b366-43e4-82b0-0d4f58fc068b"], "createdAt": "2026-09-23T09:48:08.814Z", "updatedAt": "2026-09-23T09:48:08.814Z" },
+    { "id": "bill-2b1faa17-c090-4483-9299-f561bd22d68c", "originalAmountCents": 597400, "baseAmountCents": 597400, "currency": "CNY", "category": "交通", "note": "mj机票", "orderedAt": "2026-09-23T10:48", "payerId": "person-59c93a23-b366-43e4-82b0-0d4f58fc068b", "participantIds": ["person-3a4cb3e3-8778-4210-a2fb-091fcb9757a4", "person-59c93a23-b366-43e4-82b0-0d4f58fc068b"], "createdAt": "2026-09-23T09:50:16.089Z", "updatedAt": "2026-09-23T09:50:16.089Z" },
+    { "id": "bill-5af7ce3e-5c28-4030-adb7-78f1d3c232fb", "originalAmountCents": 600000, "baseAmountCents": 600000, "currency": "CNY", "category": "交通", "note": "mc机票预估", "orderedAt": "2026-09-23T10:50", "payerId": "person-3a4cb3e3-8778-4210-a2fb-091fcb9757a4", "participantIds": ["person-3a4cb3e3-8778-4210-a2fb-091fcb9757a4", "person-59c93a23-b366-43e4-82b0-0d4f58fc068b"], "updatedAt": "2026-09-23T09:50:45.710Z", "createdAt": "2026-09-23T09:50:45.710Z" }
+  ]
+}
