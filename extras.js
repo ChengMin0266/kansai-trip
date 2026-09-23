@@ -477,6 +477,42 @@ const SPOTS = {
     if (b) { e.preventDefault(); showPoi(b.dataset.poi); }
   });
 
+  /* ---- 记账：外币金额自动折算人民币（用上面汇率模块的缓存汇率，可手动覆盖） ---- */
+  function toCnyRate(cur) {
+    if (!rates) return null;
+    if (cur === "JPY") return rates.cny;
+    if (cur === "GBP") return rates.cny / rates.gbp;
+    return null;
+  }
+  function billForm() {
+    var list = document.querySelectorAll("form");
+    for (var i = 0; i < list.length; i++) if (list[i].querySelector('[name="baseAmount"]')) return list[i];
+    return null;
+  }
+  function autoBase(form, force) {
+    if (!form) return;
+    var base = form.querySelector('[name="baseAmount"]');
+    if (!base || base.dataset.manual === "1") return;
+    if (!force && base.value !== "") return;             /* 点击触发的补算：不覆盖已有值 */
+    if (form.dataset.ledgerId && !force) return;          /* 编辑已有账单：仅在改金额时重算 */
+    var cur = (form.querySelector('[name="currency"]') || {}).value;
+    var rate = toCnyRate(cur);
+    var amt = parseFloat((form.querySelector('[name="originalAmount"]') || {}).value);
+    if (!rate || isNaN(amt) || amt <= 0) return;
+    base.value = (amt * rate).toFixed(2);
+    base.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+  document.addEventListener("input", function (e) {
+    var t = e.target;
+    if (!t || !t.getAttribute) return;
+    if (t.getAttribute("name") === "baseAmount" && e.isTrusted) { t.dataset.manual = "1"; return; }
+    if (t.getAttribute("name") === "originalAmount") autoBase(t.closest("form"), true);
+  });
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest("#ledger-root")) return;
+    setTimeout(function () { autoBase(billForm(), false); }, 250);
+  });
+
   function boot() {
     mountFx();
     wrapTimeline();

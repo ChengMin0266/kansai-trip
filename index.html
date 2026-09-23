@@ -43,6 +43,11 @@
   .osm-spot{position:absolute;width:30px;height:30px;transform:translate(-50%,-50%);border-radius:50%;border:none;background:transparent;cursor:pointer;padding:0}
   .osm-spot:hover,.osm-spot:focus-visible{background:rgba(29,93,144,.18);box-shadow:0 0 0 2px rgba(29,93,144,.55);outline:none}
   .osm-zoom{position:absolute;right:10px;bottom:34px;border:1px solid rgba(0,0,0,.15);border-radius:8px;background:rgba(255,255,255,.92);color:#33526b;font-size:12.5px;padding:5px 12px;cursor:pointer}
+  /* 家庭出行模式（DIY 2026-09-23）：隐藏分账与转账结算 UI，逻辑保留（分账默认全员） */
+  .ledger-fieldset:has([data-ledger-action="select-all-participants"]){display:none}
+  .ledger-settlement-section{display:none}
+  .ledger-member-metrics div:nth-child(2),.ledger-member-metrics div:nth-child(3){display:none}
+  .ledger-member-bill span:last-child{display:none}
 </style>
 
   <script src="runtime-storage.js?v=20260910-2" defer></script>
@@ -51,7 +56,7 @@
   <script src="app.js?v=20260910-4" defer></script>
   <script src="ticket-pdf-preview.js?v=20260910-2" defer></script>
   <script src="ledger.js?v=20260910-3" defer></script>
-  <script src="extras.js?v=20260922-1" defer></script>
+  <script src="extras.js?v=20260923-1" defer></script>
   <script src="site-navigation.js?v=20260910-2" defer></script>
 </head>
 <body>

@@ -2,10 +2,11 @@
   "use strict";
 
   const STORAGE_VERSION = 1;
+  /* DIY 2026-09-23：本行程币种只留 日元/人民币/英镑，统计仍以人民币折算 */
   const DEFAULT_SETTINGS = Object.freeze({
     baseCurrency: "CNY",
-    commonCurrencies: ["EUR", "CHF", "HKD"],
-    lastCurrency: "CNY"
+    commonCurrencies: ["JPY", "GBP"],
+    lastCurrency: "JPY"
   });
   const CATEGORIES = Object.freeze(["餐饮", "交通", "住宿", "门票", "购物", "其他"]);
   const AVATAR_COLORS = Object.freeze([
@@ -273,9 +274,15 @@
         .map((code) => String(code).toUpperCase())
         .filter((code) => CURRENCY_BY_CODE.has(code) && code !== baseCurrency)
     )];
+    /* DIY 2026-09-23：旧默认（EUR/CHF/HKD，未被用户改动过）迁移为本行程币种 */
+    if (commonCurrencies.length === 3 && ["EUR", "CHF", "HKD"].every((code, i) => commonCurrencies[i] === code)) {
+      commonCurrencies.splice(0, 3, "JPY", "GBP");
+    }
     const availableCurrencies = new Set([baseCurrency, ...commonCurrencies]);
     const requestedLast = String(raw.settings?.lastCurrency || baseCurrency).toUpperCase();
-    const lastCurrency = availableCurrencies.has(requestedLast) ? requestedLast : baseCurrency;
+    let lastCurrency = availableCurrencies.has(requestedLast) ? requestedLast : baseCurrency;
+    /* DIY 2026-09-23：还没记过账时默认优先日元 */
+    if (lastCurrency === baseCurrency && availableCurrencies.has("JPY") && !(Array.isArray(raw.bills) && raw.bills.length)) lastCurrency = "JPY";
     const bills = (Array.isArray(raw.bills) ? raw.bills : []).flatMap((bill) => {
       const originalAmountCents = Number(bill?.originalAmountCents);
       const baseAmountCents = Number(bill?.baseAmountCents);
@@ -511,11 +518,16 @@
   }
 
   function availableCurrencyCodes(extraCode = "") {
+    /* DIY 2026-09-23：选择顺序固定 日元 → 人民币 → 英镑，其余排后 */
+    const preferred = ["JPY", "CNY", "GBP"];
     return [...new Set([
       ledgerData.settings.baseCurrency,
       ...ledgerData.settings.commonCurrencies,
       extraCode
-    ].filter((code) => CURRENCY_BY_CODE.has(code)))];
+    ].filter((code) => CURRENCY_BY_CODE.has(code)))].sort((a, b) => {
+      const ia = preferred.indexOf(a); const ib = preferred.indexOf(b);
+      return (ia < 0 ? preferred.length : ia) - (ib < 0 ? preferred.length : ib);
+    });
   }
 
   function billShares(bill) {
@@ -697,8 +709,8 @@
             </label>
 
             <label class="ledger-field ledger-date-field">
-              <span class="ledger-field-label">下单时间 <small>选填</small></span>
-              <input class="ledger-input" type="datetime-local" name="orderedAt" value="${escapeAttribute(editingBill?.orderedAt || draft?.orderedAt || "")}">
+              <span class="ledger-field-label">下单时间 <small>默认为记账时间</small></span>
+              <input class="ledger-input" type="datetime-local" name="orderedAt" value="${escapeAttribute(editingBill?.orderedAt || draft?.orderedAt || new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16))}">
             </label>
 
             <fieldset class="ledger-fieldset">
@@ -940,9 +952,9 @@
     return `
       <section class="ledger-tab-panel" data-ledger-panel="stats" role="tabpanel" aria-labelledby="ledger-stats-tab" ${activeTab === "stats" ? "" : "hidden"}>
         <section class="ledger-stats-overview" aria-labelledby="ledger-stats-title">
-          <p class="ledger-section-kicker">账单结算</p>
+          <p class="ledger-section-kicker">花费统计</p>
           <h2 id="ledger-stats-title">${escapeHtml(formatMoney(stats.totalCents, baseCurrency))}</h2>
-          <span>${ledgerData.bills.length} 笔账单 · 以 ${escapeHtml(baseCurrency)} 结算</span>
+          <span>${ledgerData.bills.length} 笔账单 · 以 ${escapeHtml(baseCurrency)} 折算</span>
         </section>
 
         <section class="ledger-settlement-section" aria-labelledby="ledger-settlement-title">
@@ -1172,7 +1184,7 @@
         </header>
         <nav class="ledger-tabs" role="tablist" aria-label="记账页面">
           <button id="ledger-entry-tab" class="ledger-tab ${activeTab === "entry" ? "ledger-is-active" : ""}" type="button" role="tab" aria-selected="${activeTab === "entry"}" data-ledger-action="set-tab" data-ledger-tab="entry">记账</button>
-          <button id="ledger-stats-tab" class="ledger-tab ${activeTab === "stats" ? "ledger-is-active" : ""}" type="button" role="tab" aria-selected="${activeTab === "stats"}" data-ledger-action="set-tab" data-ledger-tab="stats">账单结算</button>
+          <button id="ledger-stats-tab" class="ledger-tab ${activeTab === "stats" ? "ledger-is-active" : ""}" type="button" role="tab" aria-selected="${activeTab === "stats"}" data-ledger-action="set-tab" data-ledger-tab="stats">花费统计</button>
         </nav>
         <div class="ledger-live" role="status" aria-live="polite">${escapeHtml(notice)}</div>
         ${renderEntryPage()}
