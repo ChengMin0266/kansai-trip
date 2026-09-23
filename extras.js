@@ -477,6 +477,58 @@ const SPOTS = {
     if (b) { e.preventDefault(); showPoi(b.dataset.poi); }
   });
 
+  /* ---- 记账：账本备份 / 导入（本地存储在设备里，备份文本可发微信留存） ---- */
+  function runtimeKey() {
+    var exact = "travel-plan:runtime:v1:kansai-2026-09";
+    if (localStorage.getItem(exact) !== null) return exact;
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf("travel-plan:runtime:") === 0) return k;
+    }
+    return exact;
+  }
+  function mountBackup() {
+    var root = $("#fx-root");
+    if (!root || $("#lg-backup")) return;
+    var row = document.createElement("div");
+    row.className = "fx-card";
+    row.innerHTML = '<div class="fx-head"><div><p class="fx-kicker">BACKUP</p><h2>账本备份</h2></div>' +
+      '<span></span></div>' +
+      '<p class="fx-rate">账目只存在本设备浏览器里。点「备份账本」把文本发到微信留存（或发给 Claude 存档）；换设备用「导入备份」粘贴恢复。</p>' +
+      '<div class="fx-row"><button type="button" class="fx-refresh" id="lg-backup">⬆ 备份账本</button>' +
+      '<button type="button" class="fx-refresh" id="lg-restore">⬇ 导入备份</button>' +
+      '<span id="lg-backup-msg" style="font-size:12.5px;color:#5a8a5f;align-self:center"></span></div>';
+    root.appendChild(row);
+    var msg = function (t) { $("#lg-backup-msg").textContent = t; setTimeout(function () { $("#lg-backup-msg").textContent = ""; }, 8000); };
+    $("#lg-backup").addEventListener("click", function () {
+      var raw = localStorage.getItem(runtimeKey());
+      if (!raw) { msg("还没有账目数据"); return; }
+      var snap; try { snap = JSON.parse(raw); } catch (e) { msg("数据读取失败"); return; }
+      var payload = JSON.stringify({ kansaiLedgerBackup: 1, exportedAt: new Date().toISOString(),
+        settings: snap.settings || null, travelers: snap.travelers || [], bills: snap.bills || [] });
+      if (navigator.share) {
+        navigator.share({ title: "关西行程账本备份", text: payload }).then(function () { msg("已发出"); }).catch(function () {});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(payload).then(function () { msg("已复制，粘贴到微信/Claude 即可"); }, function () { prompt("复制这段备份文本：", payload); });
+      } else { prompt("复制这段备份文本：", payload); }
+    });
+    $("#lg-restore").addEventListener("click", function () {
+      var text = prompt("粘贴之前的备份文本：", "");
+      if (!text) return;
+      var data; try { data = JSON.parse(text); } catch (e) { msg("不是有效的备份文本"); return; }
+      if (!data || data.kansaiLedgerBackup !== 1) { msg("不是有效的备份文本"); return; }
+      var key = runtimeKey();
+      var snap; try { snap = JSON.parse(localStorage.getItem(key) || "{}") || {}; } catch (e) { snap = {}; }
+      snap.version = snap.version || 1;
+      snap.settings = data.settings || snap.settings || null;
+      snap.travelers = data.travelers || [];
+      snap.bills = data.bills || [];
+      snap.updatedAt = new Date().toISOString();
+      try { localStorage.setItem(key, JSON.stringify(snap)); } catch (e) { msg("写入失败"); return; }
+      location.reload();
+    });
+  }
+
   /* ---- 记账：外币金额自动折算人民币（用上面汇率模块的缓存汇率，可手动覆盖） ---- */
   function toCnyRate(cur) {
     if (!rates) return null;
@@ -515,6 +567,7 @@ const SPOTS = {
 
   function boot() {
     mountFx();
+    mountBackup();
     wrapTimeline();
     var box = $("#timeline");
     if (box && window.MutationObserver) {
